@@ -12,6 +12,6 @@ minetest.register_craftitem("boomstick:buckshot", {
 		{"", "", ""},
 	},
     wield_scale = {x = 0.25, y = 0.25, z = 0.25},
-    on_secondary_use = boomstick.load_weapon_function,
+    on_secondary_use = boomstick.weapon_load_function,
     range=0
 })
