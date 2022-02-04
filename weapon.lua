@@ -1,7 +1,6 @@
 -- General stats for a weapon. Other categories of weapons can overwrite or inherit
 -- these properties accordingly. Indidual weapons should not directly inherit
 -- from here.
-
 local data = {
     rounds_loaded = 0,
     round_count = 0,

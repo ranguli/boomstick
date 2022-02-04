@@ -2,6 +2,7 @@ function boomstick.get_weapon_data(item_definition)
     return item_definition.boomstick_weapon_data
 end
 
+
 function boomstick.item_is_weapon(item_definition)
     if boomstick.get_weapon_data(item_definition) == nil then
         return false
@@ -21,6 +22,7 @@ function boomstick.weapon_is_full(item_definition)
     return full
 end
 
+
 function boomstick.weapon_is_empty(item_definition)
     local weapon_data = boomstick.get_weapon_data(item_definition)
 
@@ -30,6 +32,7 @@ function boomstick.weapon_is_empty(item_definition)
 
     return false
 end
+
 
 function boomstick.weapon_is_ready(item_definition)
     local weapon_data = boomstick.get_weapon_data(item_definition)
@@ -41,15 +44,9 @@ function boomstick.weapon_is_ready(item_definition)
     return false
 end
 
+
 function boomstick.validate_weapon_data(weapon_data)
-    local keys = {
-        "name",
-        "category",
-        "item_name",
-        "capacity",
-        "textures",
-        "wield_scale"
-    }
+    local keys = {"name", "category", "item_name", "capacity", "textures", "wield_scale"}
 
     for _, key in pairs(keys) do
         if weapon_data[key] == nil then
@@ -73,7 +70,7 @@ function boomstick.create_new_weapon(new_weapon_data)
     end
 
     -- Inherit any default values from the weapons category
-    for k,v in pairs(boomstick_data[weapon_category]) do
+    for k, v in pairs(boomstick_data[weapon_category]) do
         if new_weapon_data[k] == nil then
             new_weapon_data[k] = v
         end
@@ -83,11 +80,12 @@ function boomstick.create_new_weapon(new_weapon_data)
 
 end
 
+
 function boomstick.create_new_weapon_category(name, weapon_category)
     local default_weapon_stats = boomstick_data.default_weapon_stats
 
     -- Inherit any default values from the weapon defaults
-    for k,v in pairs(default_weapon_stats) do
+    for k, v in pairs(default_weapon_stats) do
         if weapon_category[k] == nil then
             weapon_category[k] = v
         end
@@ -95,3 +93,5 @@ function boomstick.create_new_weapon_category(name, weapon_category)
 
     boomstick_data[name] = weapon_category
 end
+
+

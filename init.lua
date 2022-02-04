@@ -2,10 +2,7 @@ local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 boomstick = {}
 
-boomstick_data = {
-    default_weapon_stats = {},
-    weapons = {}
-}
+boomstick_data = {default_weapon_stats = {}, weapons = {}}
 
 dofile(modpath .. "/weapon.lua")
 dofile(modpath .. "/weapons.lua")
