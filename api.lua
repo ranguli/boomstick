@@ -42,7 +42,7 @@ function boomstick.weapon_is_ready(item_definition)
 end
 
 function boomstick.validate_weapon_data(weapon_data)
-    keys = {
+    local keys = {
         "name",
         "category",
         "item_name",

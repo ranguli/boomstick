@@ -1,5 +1,3 @@
-local modpath = minetest.get_modpath(minetest.get_current_modname())
-
 -- General stats for a pump-action shotgun. Other shotguns can overwrite or inherit these
 -- properties accordingly.
 

@@ -1,4 +1,3 @@
-local modpath = minetest.get_modpath(minetest.get_current_modname())
 local default_weapon_stats = boomstick_data.default_weapon_stats
 
 -- General stats for a shotgun. Other shotguns can overwrite or inherit these

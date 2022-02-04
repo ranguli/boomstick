@@ -1,10 +1,8 @@
-local modpath = minetest.get_modpath(minetest.get_current_modname())
-
 boomstick.weapon_cycle_function = function(itemstack, user, pointed_thing)
     -- TODO: this should also call a function that renders a shell being ejected. if the
-    -- chamber was loaded (if boomstick_data.ready=true), a loaded shell should eject, otherwise an empty shell should eject
+    -- chamber was loaded (if boomstick_data.ready=true), a loaded shell should
+    -- eject, otherwise an empty shell should eject
 
-    local player_metadata = user:get_meta()
     local item_def = itemstack:get_definition()
     local boomstick_weapon_data = item_def.boomstick_weapon_data
 
@@ -32,9 +30,6 @@ boomstick.weapon_cycle_function = function(itemstack, user, pointed_thing)
 end
 
 function weapon_fire(itemstack, user, pointed_thing)
-    local player_metadata = user:get_meta()
-    local weapon_metadata = itemstack:get_meta()
-
     local item_def = itemstack:get_definition()
     local boomstick_weapon_data = itemstack:get_definition().boomstick_weapon_data
     local player_position = user:get_pos()
@@ -79,6 +74,8 @@ function load_weapon(held_itemstack, user, pointed_thing)
     -- Loads a single round into a weapon.
 
     local player_name = user:get_player_name()
+    local player_position = user:get_pos()
+
     local inv = minetest.get_inventory({type = "player", name = player_name})
 
     inv = inv:get_list("main")

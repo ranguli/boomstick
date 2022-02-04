@@ -1,6 +1,3 @@
-local modpath = minetest.get_modpath(minetest.get_current_modname())
-local ammo_stats = dofile(modpath .. "/ammo/ammo.lua")
-
 minetest.register_craftitem("boomstick:buckshot", {
     description = "Buckshot",
     inventory_image = "boomstick_shotgun_ammo.png",

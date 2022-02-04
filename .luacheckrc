@@ -3,8 +3,7 @@ allow_defined_top = true
 
 read_globals = {
 	"minetest",
-
-	-- Testing
+    "boomstick",
 	"describe",
 	"it",
 	"assert",
