@@ -1,3 +1,9 @@
+-- boomstick by ranguli (github.com/boomstick)
+-- feb 5th, 2022
+
+-- weapon functionality like reloading, firing, and cycling
+
+
 boomstick.weapon_cycle_function = function(itemstack, user, pointed_thing)
     -- TODO: this should also call a function that renders a shell being ejected. if the
     -- chamber was loaded (if boomstick_data.ready=true), a loaded shell should
@@ -60,8 +66,9 @@ end
 
 boomstick.weapon_fire_function = weapon_fire
 
-function load_weapon(held_itemstack, user, pointed_thing)
+boomstick.weapon_load_function = function(held_itemstack, user, pointed_thing)
     -- Loads a single round into a weapon.
+    --
 
     local player_name = user:get_player_name()
     local player_position = user:get_pos()
@@ -119,22 +126,22 @@ function load_weapon(held_itemstack, user, pointed_thing)
 end
 
 
-boomstick.weapon_load_function = load_weapon
-
 function boomstick.launch_projectiles(player, weapon_data, pointed_thing)
+
     local projectile_data = weapon_data.projectile_data
 
     local player_position = player:get_pos()
     player_position.y = player_position.y + 1.5
 
-    local entity_name = projectile_data.name
+    local entity_name = "boomstick:" .. projectile_data._item_name
     local projectile = minetest.add_entity(player_position, entity_name)
 
     local player_look_direction = player:get_look_dir()
 
-    local vel = projectile_data.velocity
+    local vel = projectile_data._velocity
 
     -- Set projectile velocity so it moves toward the player's look direction
+    -- TODO: this should account for (the servers) gravity
     local projectile_velocity = {
         x = player_look_direction.x * vel,
         y = player_look_direction.y * vel,
@@ -143,5 +150,3 @@ function boomstick.launch_projectiles(player, weapon_data, pointed_thing)
 
     projectile:set_velocity(projectile_velocity)
 end
-
-
