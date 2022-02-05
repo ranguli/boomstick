@@ -6,7 +6,7 @@ local shotgun_stats = {
     ammo_type = "boomstick:buckshot",
     cycle_weapon_sound = "boomstick_shotgun_rack",
     fire_weapon_sound = "boomstick_shotgun_fire",
-    load_weapon_sound = "boomstick_shotgun_load"
+    load_weapon_sound = "boomstick_shotgun_load",
 }
 
 boomstick.create_new_weapon_category("pump_shotgun", shotgun_stats)

@@ -1,3 +1,7 @@
+local modpath = minetest.get_modpath(minetest.get_current_modname())
+local pellet = dofile(modpath .. "/projectiles/pellet.lua")
+
+
 local data = {
     name = "Rustington 870",
     category = "pump_shotgun",
@@ -8,7 +12,8 @@ local data = {
         default = "boomstick_rustington_default.png",
         reload = "boomstick_rustington_reload.png",
     },
-    wield_scale = {x = 2, y = 2, z = 2}
+    wield_scale = {x = 2, y = 2, z = 2},
+    projectile_data = pellet
 }
 
 boomstick.create_new_weapon(data)
