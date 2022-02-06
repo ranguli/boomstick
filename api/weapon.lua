@@ -1,10 +1,94 @@
--- boomstick by ranguli (github.com/boomstick)
--- feb 5th, 2022
+function boomstick.get_weapon_data(item_definition)
+    return item_definition.boomstick_weapon_data
+end
 
--- weapon functionality like reloading, firing, and cycling
+function boomstick.item_is_weapon(item_definition)
+    if boomstick.get_weapon_data(item_definition) == nil then
+        return false
+    end
+    return true
+end
 
+function boomstick.weapon_is_full(item_definition)
+    local full = true
+    local weapon_data = boomstick.get_weapon_data(item_definition)
 
-boomstick.weapon_cycle_function = function(itemstack, user)
+    if weapon_data.rounds_loaded < weapon_data.capacity then
+        full = false
+    end
+
+    return full
+end
+
+function boomstick.weapon_is_empty(item_definition)
+    local weapon_data = boomstick.get_weapon_data(item_definition)
+
+    if weapon_data.rounds_loaded == 0 then
+        return true
+    end
+
+    return false
+end
+
+function boomstick.weapon_is_ready(item_definition)
+    local weapon_data = boomstick.get_weapon_data(item_definition)
+
+    if weapon_data.ready then
+        return true
+    end
+
+    return false
+end
+
+function boomstick.validate_weapon_data(data)
+    local keys = {"name", "category", "item_name", "capacity", "textures", "wield_scale"}
+
+    return boomstick.validate_table(keys, data)
+end
+
+function boomstick.create_new_weapon(new_weapon_data)
+    local weapon_category = new_weapon_data.category
+
+    if not boomstick.validate_weapon_data(new_weapon_data) then
+        error("Weapon data is missing required value")
+    end
+
+    if not boomstick.data.categories[weapon_category] then
+        error("Weapon category '" .. weapon_category .. "' does not exist.")
+    end
+
+    -- TODO: replace with table_merge
+    -- Inherit any default values from the weapons category
+    for k, v in pairs(boomstick.data.categories[weapon_category]) do
+        if new_weapon_data[k] == nil then
+            new_weapon_data[k] = v
+        end
+    end
+
+    boomstick.data.weapons[new_weapon_data.name] = new_weapon_data
+
+    minetest.register_tool("boomstick:" .. new_weapon_data.item_name, {
+        description = new_weapon_data.description,
+        wield_scale = new_weapon_data.wield_scale,
+        range = 0,
+        inventory_image = new_weapon_data.textures.default,
+        boomstick_weapon_data = new_weapon_data,
+        on_secondary_use = boomstick.weapon_cycle_function,
+        on_use = boomstick.weapon_fire_function
+    })
+
+end
+
+function boomstick.create_new_category(name, base, category)
+    -- Inherit any default values from a base, if one is provided.
+    if base ~= nil then
+        category = boomstick.table_merge(boomstick.data.categories[base], category)
+    end
+
+    boomstick.data.categories[name] = category
+end
+
+function boomstick.cycle_weapon(itemstack, user)
     -- TODO: this should also call a function that renders a shell being ejected. if the
     -- chamber was loaded (if boomstick_data.ready=true), a loaded shell should
     -- eject, otherwise an empty shell should eject
@@ -30,9 +114,10 @@ boomstick.weapon_cycle_function = function(itemstack, user)
     end
 )
 end
+boomstick.weapon_cycle_function = boomstick.cycle_weapon
 
 
-function weapon_fire(itemstack, user, pointed_thing)
+function boomstick.fire_weapon(itemstack, user, pointed_thing)
     local item_def = itemstack:get_definition()
     local boomstick_weapon_data = itemstack:get_definition().boomstick_weapon_data
     local player_position = user:get_pos()
@@ -69,10 +154,9 @@ function weapon_fire(itemstack, user, pointed_thing)
     return itemstack
 end
 
+boomstick.weapon_fire_function = boomstick.fire_weapon
 
-boomstick.weapon_fire_function = weapon_fire
-
-boomstick.weapon_load_function = function(held_itemstack, user)
+function boomstick.load_weapon(held_itemstack, user)
     -- Loads a single round into a weapon.
     --
 
@@ -123,13 +207,14 @@ boomstick.weapon_load_function = function(held_itemstack, user)
 
             minetest.after(weapon_data.reload_delay, function()
                 weapon_data.ammo_ready = true
-            end
-)
+            end)
 
         until true
     end
     return held_itemstack
 end
+
+boomstick.weapon_load_function = boomstick.load_weapon
 
 function boomstick.launch_projectiles(player, weapon_data, pointed_thing, projectiles)
 
@@ -138,6 +223,7 @@ function boomstick.launch_projectiles(player, weapon_data, pointed_thing, projec
 
     local projectile = PelletProjectile
     projectile:set_owner(player)
+    projectile:register_on_collision(boomstick.on_target_block_hit)
 
     local entity_name = "boomstick:" .. projectile_data._item_name
 
@@ -189,28 +275,4 @@ function boomstick.launch_projectiles(player, weapon_data, pointed_thing, projec
     end
 end
 
-function boomstick.launch_projectile(player, weapon_data, pointed_thing)
 
-    local projectile_data = weapon_data.projectile_data
-
-    local player_position = player:get_pos()
-    player_position.y = player_position.y + 1.5
-
-    local entity_name = "boomstick:" .. projectile_data._item_name
-    local projectile = minetest.add_entity(player_position, entity_name)
-
-    -- Keep track of who will be responsible for the damage it will cause
-    projectile:set_owner(player)
-
-    local player_look_direction = player:get_look_dir()
-    local vel = projectile_data._velocity
-
-    -- Set projectile velocity so it moves toward the player's look direction
-    local projectile_velocity = {
-        x = player_look_direction.x * vel,
-        y = player_look_direction.y * vel,
-        z = player_look_direction.z * vel
-    }
-
-    projectile:set_velocity(projectile_velocity)
-end
