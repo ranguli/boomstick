@@ -12,5 +12,6 @@ dofile(modpath .. "/weapons/weapon_functions.lua")
 dofile(modpath .. "/weapons/weapon_categories.lua")
 dofile(modpath .. "/weapons/weapon_definitions.lua")
 
-dofile(modpath .. "/items/craftitems.lua")
+dofile(modpath .. "/craftitems.lua")
+dofile(modpath .. "/crafts.lua")
 dofile(modpath .. "/items/nodes.lua")

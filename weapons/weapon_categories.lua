@@ -6,7 +6,7 @@
 local default_stats = {
     rounds_loaded = 0,
     round_count = 0,
-    accuracy = 85, -- Currently unused
+    accuracy = 95, -- Currently unused
     fire_rate = 0.9, -- Currently unused
     cycle_cooldown = 0.35,
     fire_cooldown = 0.35,
@@ -26,7 +26,6 @@ boomstick.create_new_category("shotgun", "weapon", {
     projectiles = 9,
     ammo_type = "boomstick:buckshot",
 })
-
 
 -- pump shotgun weapon category
 boomstick.create_new_category("pump_shotgun", "shotgun", {

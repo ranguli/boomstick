@@ -11,12 +11,7 @@ local data = {
         reload = "boomstick_rustington_reload.png",
     },
     wield_scale = {x = 2, y = 2, z = 1},
-    projectile_data = boomstick_data.projectiles["pellet"],
-    crafting_recipe = {
-        {"", "", ""},
-        {"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
-        {"", "", ""},
-    }
+    projectile_data = PelletProjectile,
 }
 
 boomstick.create_new_weapon(data)

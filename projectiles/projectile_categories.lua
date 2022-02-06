@@ -3,21 +3,53 @@
 
 -- projectile stats + categories that projectile implementations can use
 
-function on_step(self, dtime, moveresult)
+Projectile = {
+    _velocity = 500,
+    _lifetime = 2.5,
+}
+
+function Projectile:new(o)
+      o = o or {}
+      setmetatable(o, self)
+      self.__index = self
+      return o
+end
+
+function Projectile:on_activate(staticdata, dtime_s)
+    -- Lifespan of the projectile
+    self.timer = 0
+end
+
+function Projectile:set_owner(player)
+    self.owner = player
+end
+
+function Projectile:get_owner()
+    return self.owner
+end
+
+
+function Projectile:on_step(dtime, moveresult)
     self.timer = self.timer + dtime
 
     if self.timer >= self._lifetime then
         self.object:remove()
     end
 
-
     if moveresult.collides then
         self.object:remove()
 
         -- TODO: This code for the target block should not be in projectile.lua.
-        -- Maybe use an observer pattern
+        -- Maybe use an observer pattern?
         for _, collision in pairs(moveresult.collisions) do
-            if collision.type == "node" then
+            if collision.type == "object" then
+                if collision.object:get_player_name() ~= self.owner:get_player_name() then
+                    if self._item_name ~= collision.object:get_luaentity().name then
+                        --TODO: does not actually pull damage from weapon_data/projectile_data
+                        collision.object:punch(self.owner, 1.0, {full_punch_interval = 1.0, damage_groups = {fleshy = 10}}, nil)
+                    end
+                end
+            elseif collision.type == "node" then
                 local target_node = minetest.get_node(collision.node_pos)
                 if target_node.name == "boomstick:target" then
                     local sound_parameter_table = {name = "boomstick_ding"}
@@ -27,19 +59,6 @@ function on_step(self, dtime, moveresult)
             end
         end
     end
-
 end
 
-on_step_function = on_step
-
-local default_stats = {
-    on_activate = function(self, staticdata, dtime_s)
-        self.timer = 0
-    end,
-    on_step = on_step_function,
-    -- Custom values
-    _velocity = 500,
-    _lifetime = 2.5,
-}
-
-boomstick.create_new_category("projectile", nil, default_stats)
+--boomstick.create_new_category("projectile", nil, DefaultProjectile)

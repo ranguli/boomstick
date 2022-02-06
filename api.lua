@@ -63,7 +63,7 @@ end
 
 
 function boomstick.validate_projectile_data(data)
-    local keys = {"_name", "_category", "_item_name"}
+    local keys = {"_name", "_item_name"}
     return boomstick.validate_table(keys, data)
 end
 
@@ -99,40 +99,6 @@ function boomstick.create_new_weapon(new_weapon_data)
         on_use = boomstick.weapon_fire_function
     })
 
-    -- Crafting recipe
-    minetest.register_craft({
-        output = new_weapon_data.item_name,
-        recipe = new_weapon_data.crafting_recipe
-    })
-end
-
-
--- Creates a new projectile (an entity that can be fired from a weapon)
-function boomstick.create_new_projectile(projectile_data)
-    local category = projectile_data._category
-
-    if not boomstick.validate_projectile_data(projectile_data) then
-        error("Projectile data is missing required value")
-    end
-
-    if not boomstick_data.categories[category] then
-        error("Projectile category'" .. category .. "' does not exist.")
-    end
-
-    -- Inherit any default values from the weapons category
-    --
-    projectile_data = boomstick.table_merge(boomstick_data.categories["projectile"],
-        projectile_data)
-
-    boomstick_data.projectiles[projectile_data._item_name] = projectile_data
-    minetest.register_entity("boomstick:pellet", projectile_data)
-
-    if projectile_data._crafting_recipe ~= nil then
-        minetest.register_craft({
-            output = projectile_data._item_name,
-            recipe = projectile_data._crafting_recipe
-        })
-    end
 end
 
 

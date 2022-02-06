@@ -5,13 +5,17 @@ Minetest mod that adds boomsticks and other weapons. This mod draws inspiration 
 
 - [ ] Add projectile drop (based on games current gravity)
 - [ ] Add crafting recipes
-  - [ ] Add a long barrel crafting item
+  - [x] Add a long barrel crafting item + recipe
+  - [x] Add a body crafting item + recipe
+  - [ ] Ammo recipes
+- [ ] Add durability effects
 - [ ] Smoke particles
 - [ ] Doors and glass should break when fired at with certain weapons
 - [ ] Emit a temporary light source upon firing (muzzle flash)
 - [ ] Add settingtypes.txt for server owners
 - [ ] Add weapon privilidges for server owners
 - [ ] Add more weapons (revolver, rifle, etc)
+- [ ] Craft guide support
 - [x] Implement basic weapon mechanics (shooting, reloading, running out of ammo)
 - [x] Add a target block
 - [x] Add pump shotgun
