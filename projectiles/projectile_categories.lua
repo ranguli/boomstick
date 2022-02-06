@@ -45,8 +45,7 @@ function Projectile:on_step(dtime, moveresult)
             if collision.type == "object" then
                 if collision.object:get_player_name() ~= self.owner:get_player_name() then
                     if self._item_name ~= collision.object:get_luaentity().name then
-                        --TODO: does not actually pull damage from weapon_data/projectile_data
-                        collision.object:punch(self.owner, 1.0, {full_punch_interval = 1.0, damage_groups = {fleshy = 10}}, nil)
+                        collision.object:punch(self.owner, 1.0, {full_punch_interval = 1.0, damage_groups = {fleshy = self._damage}}, nil)
                     end
                 end
             elseif collision.type == "node" then

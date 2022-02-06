@@ -8,6 +8,7 @@ local pellet = {
     _item_name = "pellet",
     _entity_name = "boomstick:pellet",
     _velocity = 50,
+    _damage = 6, -- *per* pellet
 	initial_properties = {
 		visual = "sprite",
         textures = {"boomstick_projectile_pellet.png"},
