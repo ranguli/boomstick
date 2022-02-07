@@ -1,1 +1,1 @@
-lua-format -i *.lua && luacheck . && busted .
+lua-format -i *.lua && luacheck .
