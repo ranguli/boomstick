@@ -1,1 +1,1 @@
-lua-format -i *.lua && luacheck . && ldoc ./doc
+lua-format -i *.lua && luacheck .
