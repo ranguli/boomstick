@@ -95,7 +95,7 @@ function boomstick.create_new_weapon(new_weapon_data)
     minetest.register_tool("boomstick:" .. new_weapon_data.item_name, {
         description = new_weapon_data.description,
         wield_scale = new_weapon_data.wield_scale,
-        range = 0,
+        range = 1,
         inventory_image = new_weapon_data.textures.default,
         boomstick_weapon_data = new_weapon_data,
         on_secondary_use = boomstick.weapon_cycle_function,
