@@ -1,5 +1,7 @@
+local S = minetest.get_translator()
+
 minetest.register_craftitem("boomstick:buckshot", {
-    description = "Buckshot",
+    description = S("Buckshot"),
     inventory_image = "boomstick_shotgun_ammo.png",
     wield_image = "boomstick_shotgun_ammo.png",
     stack_max = 25,
@@ -9,7 +11,7 @@ minetest.register_craftitem("boomstick:buckshot", {
 })
 
 minetest.register_craftitem("boomstick:longbarrel", {
-    description = "Long Barrel",
+    description = S("@1 Barrel", S("Long")),
     inventory_image = "boomstick_long_barrel.png",
     wield_image = "boomstick_long_barrel.png",
     stack_max = 1,
@@ -17,7 +19,7 @@ minetest.register_craftitem("boomstick:longbarrel", {
 })
 
 minetest.register_craftitem("boomstick:leadpellets", {
-    description = "Lead Pellets",
+    description = S("@1 Pellets", S("Lead")),
     groups = {boomstick_pellets = 1},
     inventory_image = "boomstick_pellets.png",
     wield_image = "boomstick_pellets.png",
@@ -25,7 +27,7 @@ minetest.register_craftitem("boomstick:leadpellets", {
 })
 
 minetest.register_craftitem("boomstick:trigger", {
-    description = "Trigger",
+    description = S("Trigger"),
     inventory_image = "boomstick_trigger.png",
     wield_image = "boomstick_trigger.png",
     stack_max = 1,
@@ -33,7 +35,7 @@ minetest.register_craftitem("boomstick:trigger", {
 })
 
 minetest.register_craftitem("boomstick:body", {
-    description = "Gun Body",
+    description = S("@1 Body", S("Gun")),
     inventory_image = "boomstick_body.png",
     wield_image = "boomstick_body.png",
     stack_max = 1,
@@ -41,7 +43,7 @@ minetest.register_craftitem("boomstick:body", {
 })
 
 minetest.register_craftitem("boomstick:hull", {
-    description = "Hull",
+    description = S("Hull"),
     inventory_image = "boomstick_shotgun_ammo.png",
     wield_image = "boomstick_shotgun_buckshot.png",
     wield_scale = {x = 0.5, y = 0.5, z = 1}
