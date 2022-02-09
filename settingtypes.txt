@@ -1,0 +1,2 @@
+boomstick.allow_pvp (Allow PvP weapon damage) bool true
+boomstick.allow_target_blocks (Allow Target Block crafting) bool true

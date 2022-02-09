@@ -1,7 +1,5 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
---- i am a module here called boomstick!
-
 dofile(modpath .. "/api.lua")
 
 dofile(modpath .. "/projectiles.lua")
