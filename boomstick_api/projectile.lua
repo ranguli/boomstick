@@ -35,21 +35,21 @@
 -- minetest.register_entity("boomstick:pellet", PelletProjectile)
 
 -- @classmod boomstick.Projectile
-boomstick.Projectile = {
+boomstick_api.Projectile = {
     _velocity = 500,
     _lifetime = 2.5,
     _damage = 4,
     _on_collision_functions = {}
 }
 
-function boomstick.Projectile:new(o)
+function boomstick_api.Projectile:new(o)
       o = o or {}
       setmetatable(o, self)
       self.__index = self
       return o
 end
 
-function boomstick.Projectile:on_activate(staticdata, dtime_s)
+function boomstick_api.Projectile:on_activate(staticdata, dtime_s)
     -- Timer for despawning
     self._timer = 0
 end
@@ -62,7 +62,7 @@ end
 -- **Note:** Unless you're doing something special, the owner of the weapon
 -- should be the player who is holding it.
 -- @tparam ObjectRef player An [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref) of the player that will own the weapon.
-function boomstick.Projectile:set_owner(player)
+function boomstick_api.Projectile:set_owner(player)
     -- Who fired the projectile
     self._owner = player
 end
@@ -76,7 +76,7 @@ end
 -- unless you are extending the mod or making custom behavior.
 --
 -- @tparam function func Function to be executed on collision.
-function boomstick.Projectile:get_owner()
+function boomstick_api.Projectile:get_owner()
     return self._owner
 end
 
@@ -89,7 +89,7 @@ end
 -- unless you are extending the mod or making custom behavior.
 --
 -- @tparam function func Function to be executed on collision.
-function boomstick.Projectile:register_on_collision(func)
+function boomstick_api.Projectile:register_on_collision(func)
     table.insert(self._on_collision_functions, func)
 end
 
@@ -105,7 +105,7 @@ end
 -- @param collision Collision object returned by Minetest
 -- @treturn boolean whether or not the projectile collided with another
 -- projectile.
-function boomstick.Projectile:collision_is_projectile(collision)
+function boomstick_api.Projectile:collision_is_projectile(collision)
     local entity = collision.object:get_luaentity()
 
     if not entity then
@@ -130,7 +130,7 @@ end
 --
 -- **Note:** It is usually not necesary to call this function directly to create a new weapon,
 -- unless you are extending the mod or making custom behavior.
-function boomstick.Projectile:do_damage(collision)
+function boomstick_api.Projectile:do_damage(collision)
 
     if collision.type ~= "object" then
         -- TODO: this won't allow weapons to do damage to blocks
@@ -143,7 +143,7 @@ function boomstick.Projectile:do_damage(collision)
     end
 end
 
-function boomstick.Projectile:collision_is_suicide(collision)
+function boomstick_api.Projectile:collision_is_suicide(collision)
     if not collision then
         return
     end
@@ -163,7 +163,7 @@ function boomstick.Projectile:collision_is_suicide(collision)
     return false
 end
 
-function boomstick.Projectile:on_step(dtime, moveresult)
+function boomstick_api.Projectile:on_step(dtime, moveresult)
     self._timer = self._timer + dtime
 
     if self._timer >= self._lifetime then
