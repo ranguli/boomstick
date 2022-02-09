@@ -22,6 +22,7 @@ function boomstick.weapon_is_full(item_definition)
     local weapon_data = boomstick.get_weapon_data(item_definition)
 
     if weapon_data.rounds_loaded < weapon_data.capacity then
+        boomstick.debug(string.format("rounds_loaded < capacity (%d < %d)", weapon_data.rounds_loaded, weapon_data.capacity))
         full = false
     end
 
@@ -55,10 +56,10 @@ end
 -- @param item_definition An [Item Definition](https://minetest.gitlab.io/minetest/definition-tables/#item-definition) of a weapon, returned by [get_definition()](https://minetest.gitlab.io/minetest/class-reference/#methods_2)
 -- @return boolean - Indicating if the weapon is ready to fire.
 
-function boomstick.weapon_is_ready(item_definition)
+function boomstick.weapon_is_cocked(item_definition)
     local weapon_data = boomstick.get_weapon_data(item_definition)
 
-    if weapon_data.ready then
+    if weapon_data.cocked then
         return true
     end
 
@@ -115,79 +116,86 @@ end
 
 function boomstick.cycle_weapon(itemstack, user)
     -- TODO: this should also call a function that renders a shell being ejected. if the
-    -- chamber was loaded (if boomstick_data.ready=true), a loaded shell should
+    -- chamber was loaded (if boomstick_data.cocked=true), a loaded shell should
     -- eject, otherwise an empty shell should eject
 
     local item_def = itemstack:get_definition()
-    local boomstick_weapon_data = item_def.boomstick_weapon_data
+    local weapon_data = item_def.boomstick_weapon_data
 
-    if boomstick.weapon_is_ready(item_def) then
+    if boomstick.weapon_is_cocked(item_def) then
         return
     end
 
     local player_position = user:get_pos()
 
-    local sound_parameter_table = {name = boomstick_weapon_data.cycle_weapon_sound}
-    local sound_spec = {pos = player_position, gain = 1.5, max_hear_distance = 5}
+    local sounds = weapon_data.cycle_weapon_sounds
+    local sound_spec = boomstick.get_random_sound(sounds)
+    local sound_table = {pos = player_position, gain = 1.5, max_hear_distance = 5}
 
-    minetest.sound_play(sound_parameter_table, sound_spec, false)
+    minetest.sound_play(sound_spec, sound_table, false)
+    --weapon_data.cocked = true
 
-    boomstick_weapon_data.ready = false
+    minetest.after(weapon_data.cycle_cooldown, function()
+        weapon_data.cocked = true
+    end)
 
-    minetest.after(boomstick_weapon_data.cycle_cooldown, function()
-        boomstick_weapon_data.ready = true
-    end
-)
 end
 boomstick.weapon_cycle_function = boomstick.cycle_weapon
 
 function boomstick.fire_weapon(itemstack, user, pointed_thing)
     local item_def = itemstack:get_definition()
-    local boomstick_weapon_data = itemstack:get_definition().boomstick_weapon_data
-    local player_position = user:get_pos()
+    local weapon_data = itemstack:get_definition().boomstick_weapon_data
+    local player_pos = user:get_pos()
 
-    if not boomstick.weapon_is_ready(item_def) then
+    if not boomstick.weapon_is_cocked(item_def) then
         return
-    elseif boomstick.weapon_is_empty(item_def) then
-        -- "Click"
-        local sound_parameter_table = {name = boomstick_weapon_data.empty_sound}
-        local sound_spec = {pos = player_position, gain = 0.25, max_hear_distance = 5}
-
-        minetest.sound_play(sound_parameter_table, sound_spec, false)
-    else
-        -- "Bang"
-        local sound_parameter_table = {name = boomstick_weapon_data.fire_weapon_sound}
-        local sound_spec = {pos = player_position, gain = 1.0, max_hear_distance = 32}
-
-        local projectiles = boomstick_weapon_data.projectiles
-
-        if projectiles == 1 then
-            boomstick.launch_projectile(user, boomstick_weapon_data, pointed_thing)
-        else
-            boomstick.launch_projectiles(user, boomstick_weapon_data, pointed_thing, projectiles)
-        end
-
-        minetest.sound_play(sound_parameter_table, sound_spec, false)
-
-        boomstick_weapon_data.rounds_loaded = boomstick_weapon_data.rounds_loaded - 1
     end
 
-    -- Start the cooldown time after firing
-    boomstick_weapon_data.ready = false
+    if boomstick.weapon_is_empty(item_def) then
+        boomstick.fire_empty_weapon(weapon_data, player_pos)
+    else
+        boomstick.fire_loaded_weapon(user, weapon_data, player_pos, pointed_thing)
+    end
+
+    weapon_data.cocked = false
 
     return itemstack
 end
 
 boomstick.weapon_fire_function = boomstick.fire_weapon
 
+function boomstick.fire_loaded_weapon(user, weapon_data, player_pos)
+    local sounds = weapon_data.fire_weapon_sounds
+    local sound_spec = boomstick.get_random_sound(sounds)
+    local sound_table = {pos = player_pos, gain = 1.0, max_hear_distance = 32}
+
+    local projectiles = weapon_data.projectiles
+
+    if projectiles == 1 then
+        boomstick.launch_projectile(user, weapon_data, pointed_thing)
+    else
+        boomstick.launch_projectiles(user, weapon_data, pointed_thing, projectiles)
+    end
+
+    minetest.sound_play(sound_spec, sound_table, false)
+    weapon_data.rounds_loaded = weapon_data.rounds_loaded - 1
+end
+
+function boomstick.fire_empty_weapon(weapon_data, player_position)
+    local sounds = weapon_data.weapon_empty_sounds
+    local sound_spec = boomstick.get_random_sound(sounds)
+    local sound_table = {pos = player_position, gain = 0.25, max_hear_distance = 5}
+
+    minetest.sound_play(sound_spec, sound_table, false)
+end
+
 function boomstick.load_weapon(held_itemstack, user)
     -- Loads a single round into a weapon.
-    --
 
     local player_name = user:get_player_name()
     local player_position = user:get_pos()
 
-    local sound_spec = {pos = player_position, gain = 1.0, max_hear_distance = 32}
+    local sound_table = {pos = player_position, gain = 1.0, max_hear_distance = 32}
 
     local inv = minetest.get_inventory({type = "player", name = player_name})
 
@@ -200,14 +208,16 @@ function boomstick.load_weapon(held_itemstack, user)
             local inv_itemstack_def = inv_itemstack:get_definition()
 
             local weapon_data = boomstick.get_weapon_data(inv_itemstack_def)
-            local sound_parameter_table = {name = weapon_data.load_weapon_sound}
+
+            local sounds = weapon_data.load_weapon_sounds
+            local sound_spec = boomstick.get_random_sound(sounds)
 
             weapon_data.rounds_loaded = weapon_data.rounds_loaded + 1
             weapon_data.ammo_ready = false
 
             held_itemstack:take_item()
 
-            minetest.sound_play(sound_parameter_table, sound_spec, false)
+            minetest.sound_play(sound_spec, sound_table, false)
 
             minetest.after(weapon_data.reload_delay, function()
                 weapon_data.ammo_ready = true
@@ -319,16 +329,15 @@ end
 
 boomstick.create_new_category("weapon", nil,  {
     rounds_loaded = 0,
-    accuracy = 95, -- Currently unused
-    fire_rate = 0.9, -- Currently unused
-    cycle_cooldown = 0.35,
-    reload_delay = 0.55,
+    accuracy = 95,
+    cycle_cooldown = 0.25,
+    reload_delay = 0.75,
     durability = 1000, -- Currently used
     action = "manual", -- Currently unused
-    ready = true,
+    cocked = true,
     ammo_ready = true,
     wield_scale = {x = 1.5, y = 1.5, z = 1},
-    empty_sound = "boomstick_empty"
+    weapon_empty_sounds = {"boomstick_empty"}
 })
 
 
@@ -340,8 +349,7 @@ boomstick.create_new_category("shotgun", "weapon", {
 
 -- pump shotgun weapon category
 boomstick.create_new_category("pump_shotgun", "shotgun", {
-    cycle_weapon_sound = "boomstick_shotgun_rack",
-    fire_weapon_sound = "boomstick_shotgun_fire",
-    load_weapon_sound = "boomstick_shotgun_load",
+    cycle_weapon_sounds = {"boomstick_shotgun_rack"},
+    fire_weapon_sounds = {"boomstick_shotgun_fire_1", "boomstick_shotgun_fire_2", "boomstick_shotgun_fire_3"},
+    load_weapon_sounds = {"boomstick_shotgun_load_1", "boomstick_shotgun_load_2"}
 })
-

@@ -19,3 +19,27 @@ function boomstick.validate_table(keys, data)
     end
     return true
 end
+
+function boomstick.get_random_entry(table)
+    if table == nil then
+        boomstick.debug("A nil table was passed to boomstick.get_random_sound()")
+        return
+    end
+
+    return table[math.random(#table)]
+end
+
+function boomstick.get_random_sound(table)
+    if table == nil then
+        boomstick.debug("A nil table was passed to boomstick.get_random_sound()")
+        return
+    end
+
+    return {name = boomstick.get_random_entry(table)}
+end
+
+function boomstick.debug(string)
+    if minetest.settings:get_bool("boomstick_debug") then
+        minetest.log(string)
+    end
+end
