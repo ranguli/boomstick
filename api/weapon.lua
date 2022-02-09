@@ -49,9 +49,9 @@ end
 
 --- Returns a boolean for whether or not a weapon is ready to fire.
 --
---  A convenience function that returns the `ready` field from the weapon
---  data. A weapon is considered ready when it is loaded and no cooldown timers are
---  currently running.
+--  A convenience function that returns the `cocked` field from the weapon
+--  data. A weapon is considered cocked (and therefore ready to fire) when it is
+--  loaded and no cooldown timers are currently active on it.
 --
 -- @param item_definition An [Item Definition](https://minetest.gitlab.io/minetest/definition-tables/#item-definition) of a weapon, returned by [get_definition()](https://minetest.gitlab.io/minetest/class-reference/#methods_2)
 -- @return boolean - Indicating if the weapon is ready to fire.
@@ -145,16 +145,15 @@ boomstick.weapon_cycle_function = boomstick.cycle_weapon
 function boomstick.fire_weapon(itemstack, user, pointed_thing)
     local item_def = itemstack:get_definition()
     local weapon_data = itemstack:get_definition().boomstick_weapon_data
-    local player_pos = user:get_pos()
 
     if not boomstick.weapon_is_cocked(item_def) then
         return
     end
 
     if boomstick.weapon_is_empty(item_def) then
-        boomstick.fire_empty_weapon(weapon_data, player_pos)
+        boomstick.fire_empty_weapon(weapon_data)
     else
-        boomstick.fire_loaded_weapon(user, weapon_data, player_pos, pointed_thing)
+        boomstick.fire_loaded_weapon(user, weapon_data, pointed_thing)
     end
 
     weapon_data.cocked = false
@@ -164,7 +163,15 @@ end
 
 boomstick.weapon_fire_function = boomstick.fire_weapon
 
-function boomstick.fire_loaded_weapon(user, weapon_data, player_pos)
+--- Fires a weapon as if it is loaded.
+-- **Note:** It is usually not necesary to call this function directly unless
+-- you are extending the mod or making custom behavior.
+-- @param user - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref)
+-- @param weapon_data - Weapon data for a weapon.
+-- @param pointed_thing - Returned by Minetest callback.
+function boomstick.fire_loaded_weapon(user, weapon_data, pointed_thing)
+    local player_pos = user:get_pos()
+
     local sounds = weapon_data.fire_weapon_sounds
     local sound_spec = boomstick.get_random_sound(sounds)
     local sound_table = {pos = player_pos, gain = 1.0, max_hear_distance = 32}
@@ -181,7 +188,13 @@ function boomstick.fire_loaded_weapon(user, weapon_data, player_pos)
     weapon_data.rounds_loaded = weapon_data.rounds_loaded - 1
 end
 
-function boomstick.fire_empty_weapon(weapon_data, player_position)
+--- Fires a weapon as if it is empty.
+-- **Note:** It is usually not necesary to call this function directly unless
+-- you are extending the mod or making custom behavior.
+-- @param weapon_data - Weapon data for a weapon.
+function boomstick.fire_empty_weapon(weapon_data)
+    local player_pos = user:get_pos()
+
     local sounds = weapon_data.weapon_empty_sounds
     local sound_spec = boomstick.get_random_sound(sounds)
     local sound_table = {pos = player_position, gain = 0.25, max_hear_distance = 5}

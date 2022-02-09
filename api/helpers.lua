@@ -20,6 +20,9 @@ function boomstick.validate_table(keys, data)
     return true
 end
 
+--- Returns a random item from a table.
+-- @param table containing items
+-- @return item from the table.
 function boomstick.get_random_entry(table)
     if table == nil then
         boomstick.debug("A nil table was passed to boomstick.get_random_sound()")
@@ -29,6 +32,11 @@ function boomstick.get_random_entry(table)
     return table[math.random(#table)]
 end
 
+--- Given a table of sounds, randomly select one and return a [SimpleSoundSpec](https://minetest.gitlab.io/minetest/sounds/#simplesoundspec).
+-- This allows weapons (or anything with a sound) to randomly play different
+-- sounds to add variety.
+-- @param table A table of strings, containing filenames of sounds.
+-- @return table - A [SimpleSoundSpec](https://minetest.gitlab.io/minetest/sounds/#simplesoundspec) with the name set to a random sound.
 function boomstick.get_random_sound(table)
     if table == nil then
         boomstick.debug("A nil table was passed to boomstick.get_random_sound()")
@@ -38,6 +46,10 @@ function boomstick.get_random_sound(table)
     return {name = boomstick.get_random_entry(table)}
 end
 
+--- Wrapper for `minetest.debug()` that will check if a debug flag is set in the mod settings before logging.
+-- This is a work in progress.
+-- @param string - A string to log to the Minetest console for debugging purposes.
+-- @return table - A [SimpleSoundSpec](https://minetest.gitlab.io/minetest/sounds/#simplesoundspec) with the name set to a random sound.
 function boomstick.debug(string)
     if minetest.settings:get_bool("boomstick_debug") then
         minetest.log(string)
