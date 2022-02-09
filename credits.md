@@ -7,5 +7,5 @@
 - [Grenade Texture](https://opengameart.org/content/16x16-grenades)
 
 ## Sounds
-- Target Block<sub>[1](https://freesound.org/s/411089/)</sub><sub>[2](https://freesound.org/s/127149/)</sub>
+- Target Block<sup>[1](https://freesound.org/s/411089/)</sup> <sup>[2](https://freesound.org/s/127149/)</sup>
 - [Shotgun Reload](https://opengameart.org/content/shotgun-reload-sound-effects)
