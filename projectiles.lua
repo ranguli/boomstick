@@ -1,8 +1,10 @@
+local S = minetest.get_translator()
+
 -- boomstick by ranguli (github.com/boomstick)
 -- feb 5th, 2022
 -- definitions of projectiles
 local pellet = {
-    _name = "Pellet",
+    _name = S("Pellet"),
     _item_name = "pellet",
     _entity_name = "boomstick:pellet",
     _velocity = 50,

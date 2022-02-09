@@ -1,0 +1,16 @@
+# textdomain: boomstick
+
+@1 Block=@1 Block
+@1 Barrel=@1 Barrel
+@1 Body=@1 Body
+@1 Pellets=@1 Pellets
+Gun=Gun
+Shotgun=Shotgun
+Pellet=Pellet
+Buckshot=Buckshot
+Barrel=Long Barrel
+Lead=Lead
+Pellets=Pellets
+Trigger=Trigger
+Hull=Hull
+Target=Target

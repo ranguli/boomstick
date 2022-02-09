@@ -21,8 +21,11 @@ function boomstick.weapon_is_full(item_definition)
     local full = true
     local weapon_data = boomstick.get_weapon_data(item_definition)
 
-    if weapon_data.rounds_loaded < weapon_data.capacity then
-        boomstick.debug(string.format("rounds_loaded < capacity (%d < %d)", weapon_data.rounds_loaded, weapon_data.capacity))
+    local rounds_loaded = weapon_data.rounds_loaded
+    local capacity = weapon_data.capacity
+
+    if rounds_loaded < capacity then
+        boomstick.debug("rounds_loaded < capacity (%d < %d)", {rounds_loaded, capacity})
         full = false
     end
 
@@ -142,6 +145,10 @@ function boomstick.cycle_weapon(itemstack, user)
 end
 boomstick.weapon_cycle_function = boomstick.cycle_weapon
 
+--- Fires a weapon.
+-- @param itemstack - An [ItemStack](https://minetest.gitlab.io/minetest/class-reference/#itemstack) passed by Minetest when called as a callback.
+-- @param user - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref) passed by Minetest when called as a callback. This is the player who fired the weapon.
+-- @param pointed_thing - [pointed_thing](https://minetest.gitlab.io/minetest/representations-of-simple-things/#pointed_thing) passed by Minetest when called as a callback.
 function boomstick.fire_weapon(itemstack, user, pointed_thing)
     local item_def = itemstack:get_definition()
     local weapon_data = itemstack:get_definition().boomstick_weapon_data
@@ -151,9 +158,9 @@ function boomstick.fire_weapon(itemstack, user, pointed_thing)
     end
 
     if boomstick.weapon_is_empty(item_def) then
-        boomstick.fire_empty_weapon(weapon_data)
+        boomstick.fire_empty_weapon(weapon_data, user)
     else
-        boomstick.fire_loaded_weapon(user, weapon_data, pointed_thing)
+        boomstick.fire_loaded_weapon(weapon_data, user, pointed_thing)
     end
 
     weapon_data.cocked = false
@@ -166,10 +173,10 @@ boomstick.weapon_fire_function = boomstick.fire_weapon
 --- Fires a weapon as if it is loaded.
 -- **Note:** It is usually not necesary to call this function directly unless
 -- you are extending the mod or making custom behavior.
--- @param user - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref)
 -- @param weapon_data - Weapon data for a weapon.
--- @param pointed_thing - Returned by Minetest callback.
-function boomstick.fire_loaded_weapon(user, weapon_data, pointed_thing)
+-- @param user - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref) passed by Minetest when called as a callback. This is the player who fired the weapon.
+-- @param pointed_thing - [pointed_thing](https://minetest.gitlab.io/minetest/representations-of-simple-things/#pointed_thing) passed by Minetest when called as a callback.
+function boomstick.fire_loaded_weapon(weapon_data, user, pointed_thing)
     local player_pos = user:get_pos()
 
     local sounds = weapon_data.fire_weapon_sounds
@@ -192,12 +199,13 @@ end
 -- **Note:** It is usually not necesary to call this function directly unless
 -- you are extending the mod or making custom behavior.
 -- @param weapon_data - Weapon data for a weapon.
-function boomstick.fire_empty_weapon(weapon_data)
+-- @param user - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref) passed by Minetest when called as a callback. This is the player who fired the weapon.
+function boomstick.fire_empty_weapon(weapon_data, user)
     local player_pos = user:get_pos()
 
     local sounds = weapon_data.weapon_empty_sounds
     local sound_spec = boomstick.get_random_sound(sounds)
-    local sound_table = {pos = player_position, gain = 0.25, max_hear_distance = 5}
+    local sound_table = {pos = player_pos, gain = 0.25, max_hear_distance = 5}
 
     minetest.sound_play(sound_spec, sound_table, false)
 end
