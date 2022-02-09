@@ -1,10 +1,12 @@
+# Credits
+
 ## Textures
 - [Buckshot Texture](https://opengameart.org/content/cannonball)
 - [Pump Shotgun Texture](https://github.com/daviddoesminetest/rangedweapons)
 - [Shotgun Shell Texture](https://github.com/daviddoesminetest/rangedweapons)
 - [Grenade Texture](https://opengameart.org/content/16x16-grenades)
 
-# Sound Effects
+## Sound Effects
 
 - [boomstick_empty_2.ogg](https://freesound.org/people/JakLocke/sounds/412294/)
 - [boomstick_shotgun_fire.ogg](https://freesound.org/people/FilmmakersManual/sounds/522484/)
