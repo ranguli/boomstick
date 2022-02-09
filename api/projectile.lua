@@ -58,6 +58,10 @@ end
 function boomstick.Projectile:collision_is_projectile(collision)
     local entity = collision.object:get_luaentity()
 
+    if not entity then
+        return
+    end
+
     -- TODO: this only accounts for a "boomstick:pellet" colliding with a
     -- "boomstick:pellet". Should work on a group basis.
     if entity["name"] == "boomstick:pellet" then

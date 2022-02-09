@@ -5,7 +5,7 @@ minetest.register_craftitem("boomstick:buckshot", {
     stack_max = 25,
     wield_scale = {x = 0.25, y = 0.25, z = 0.25},
     on_secondary_use = boomstick.weapon_load_function,
-    range = 0
+    range = 1
 })
 
 minetest.register_craftitem("boomstick:longbarrel", {
