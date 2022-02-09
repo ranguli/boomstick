@@ -8,10 +8,10 @@ local data = {
     textures = {
         icon = "boomstick_rustington_icon.png",
         default = "boomstick_rustington_default.png",
-        reload = "boomstick_rustington_reload.png",
+        reload = "boomstick_rustington_reload.png"
     },
     wield_scale = {x = 2, y = 2, z = 1},
-    projectile_data = PelletProjectile,
+    projectile_data = PelletProjectile
 }
 
 boomstick.create_new_weapon(data)
