@@ -1,10 +1,15 @@
 # boomstick
 Minetest mod that adds boomsticks and other weapons. This mod draws inspiration from [rangedweapons](https://github.com/daviddoesminetest/rangedweapons) and is intended to be a complete rewrite and spritual successor.
 
-## To-Do:
+## Features
+- **Contributor/mod-friendly** Boomstick provides a well-documented API for creating your own weapons.
+- Localization support (translators are needed)
+- **New blocks**:
+  - The **Target Block** plays a noise when hit by a projectile.
 
+## To-Do:
 - [ ] Add projectile drop (based on games current gravity)
-- [] Add crafting recipes
+- [ ] Add crafting recipes
   - [x] Add a long barrel crafting item + recipe
   - [x] Add a body crafting item + recipe
   - [x] Ammo recipes
@@ -23,7 +28,3 @@ Minetest mod that adds boomsticks and other weapons. This mod draws inspiration 
 - [ ] Add settingtypes.txt for server owners
 - [ ] Add weapon privilidges for server owners
 - [ ] Add more weapons (revolver, rifle, etc)
-- [x] Implement basic weapon mechanics (shooting, reloading, running out of ammo)
-- [x] Add a target block
-- [x] Add pump shotgun
-- [x] Basic projectile physics and textures
