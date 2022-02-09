@@ -1,0 +1,1 @@
+boomstick_api.allow_pvp (Allow PvP weapon damage) bool true

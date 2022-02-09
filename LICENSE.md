@@ -1,4 +1,4 @@
-Copyright (C) ranguli 2022 and contributors
+Copyright (C) Joshua Murphy 2022 and contributors
 
                   GNU LESSER GENERAL PUBLIC LICENSE
                        Version 2.1, February 1999
