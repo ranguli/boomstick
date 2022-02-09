@@ -14,6 +14,7 @@ function boomstick_api.table_merge(table1, table2)
     return table2
 end
 
+
 --- Given a table and a set of keys, validate that the keys in the table exist.
 -- @param keys - Table containing keys
 -- @param data - Table to be validated.
@@ -27,6 +28,7 @@ function boomstick_api.validate_table(keys, data)
     return true
 end
 
+
 --- Returns a random item from a table.
 -- @param table containing items
 -- @return item from the table.
@@ -38,6 +40,7 @@ function boomstick_api.get_random_entry(table)
 
     return table[math.random(#table)]
 end
+
 
 --- Given a table of sounds, randomly select one and return a [SimpleSoundSpec](https://minetest.gitlab.io/minetest/sounds/#simplesoundspec).
 -- This allows weapons (or anything with a sound) to randomly play different
@@ -53,6 +56,7 @@ function boomstick_api.get_random_sound(table)
     return {name = boomstick_api.get_random_entry(table)}
 end
 
+
 --- Wrapper for `minetest.debug()` that will check if a debug flag is set in the mod settings before logging.
 -- This is a work in progress.
 -- @param string - A string to log to the Minetest console for debugging purposes.
@@ -63,3 +67,5 @@ function boomstick_api.debug(string, table)
         minetest.log(string.format(string, unpack(table)))
     end
 end
+
+

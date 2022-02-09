@@ -33,7 +33,6 @@
 --
 -- -- Register the entity with the Minetest engine
 -- minetest.register_entity("boomstick:pellet", PelletProjectile)
-
 -- @classmod boomstick.Projectile
 boomstick_api.Projectile = {
     _velocity = 500,
@@ -43,16 +42,18 @@ boomstick_api.Projectile = {
 }
 
 function boomstick_api.Projectile:new(o)
-      o = o or {}
-      setmetatable(o, self)
-      self.__index = self
-      return o
+    o = o or {}
+    setmetatable(o, self)
+    self.__index = self
+    return o
 end
+
 
 function boomstick_api.Projectile:on_activate(staticdata, dtime_s)
     -- Timer for despawning
     self._timer = 0
 end
+
 
 --- Registers a callback function to be called when the projectile has a collision.
 --  If you'd like certain behavior to happen when a projectile collides with
@@ -67,6 +68,7 @@ function boomstick_api.Projectile:set_owner(player)
     self._owner = player
 end
 
+
 --- Registers a callback function to be called when the projectile has a collision.
 --  If you'd like certain behavior to happen when a projectile collides with
 --  something, you can pass another function as an argument to this function,
@@ -80,27 +82,23 @@ function boomstick_api.Projectile:get_owner()
     return self._owner
 end
 
+
 --- Registers a callback function to be called when the projectile has a collision.
 --  If you'd like certain behavior to happen when a projectile collides with
 --  something, you can pass another function as an argument to this function,
 --  and it will be executed when the projectile collides with something.
---
--- **Note:** It is usually not necesary to call this function directly to create a new weapon,
--- unless you are extending the mod or making custom behavior.
 --
 -- @tparam function func Function to be executed on collision.
 function boomstick_api.Projectile:register_on_collision(func)
     table.insert(self._on_collision_functions, func)
 end
 
+
 --- For determining whether or not a projectile collided with another projectile.
 -- Sometimes (especially with shotguns) projectiles will collide with one
 -- another. It is often necessary to check if a collision happened between two
 -- projectiles, so that we can do something (usually ignore it). Otherwise
 -- projectiles would deal damage to one another.
---
--- **Note:** It is usually not necesary to call this function directly to create a new weapon,
--- unless you are extending the mod or making custom behavior.
 --
 -- @param collision Collision object returned by Minetest
 -- @treturn boolean whether or not the projectile collided with another
@@ -121,15 +119,12 @@ function boomstick_api.Projectile:collision_is_projectile(collision)
     return false
 end
 
+
 --- Deal damage to whatever object or node the projectile collided with.
 -- This is how we actually make projectiles do damage when they hit their
 -- target.
 -- @param collision Collision object returned by Minetest
--- @treturn bool whether or not the projectile collided with another
--- projectile.
---
--- **Note:** It is usually not necesary to call this function directly to create a new weapon,
--- unless you are extending the mod or making custom behavior.
+-- @treturn bool whether or not the projectile collided with another projectile.
 function boomstick_api.Projectile:do_damage(collision)
 
     if collision.type ~= "object" then
@@ -138,10 +133,14 @@ function boomstick_api.Projectile:do_damage(collision)
     end
 
     if not self:collision_is_projectile(collision) then
-        local tool_capabilities = {full_punch_interval = 1.0, damage_groups = {fleshy = self._damage}}
+        local tool_capabilities = {
+            full_punch_interval = 1.0,
+            damage_groups = {fleshy = self._damage}
+        }
         collision.object:punch(self._owner, 1.0, tool_capabilities)
     end
 end
+
 
 function boomstick_api.Projectile:collision_is_suicide(collision)
     if not collision then
@@ -163,6 +162,7 @@ function boomstick_api.Projectile:collision_is_suicide(collision)
     return false
 end
 
+
 function boomstick_api.Projectile:on_step(dtime, moveresult)
     self._timer = self._timer + dtime
 
@@ -179,7 +179,7 @@ function boomstick_api.Projectile:on_step(dtime, moveresult)
             end
 
             -- Execute any registered callbacks
-            for i=1, #self._on_collision_functions do
+            for i = 1, #self._on_collision_functions do
                 self._on_collision_functions[i](self, collision)
             end
             self.object:remove()
@@ -187,3 +187,5 @@ function boomstick_api.Projectile:on_step(dtime, moveresult)
 
     end
 end
+
+

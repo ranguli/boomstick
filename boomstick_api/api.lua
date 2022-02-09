@@ -1,5 +1,10 @@
 boomstick_api = {}
-boomstick_api.data = {categories = {}, projectiles = {}, weapons = {}}
+boomstick_api.data = {
+    categories = {},
+    projectiles = {},
+    weapons = {},
+    collision_callbacks = {}
+}
 
 local modpath = minetest.get_modpath("boomstick_api")
 

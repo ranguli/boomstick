@@ -1,13 +1,15 @@
 -- generic shotgun weapon category
-boomstick_api.create_new_category("shotgun", "weapon", {
-    projectiles = 9,
-    ammo_type = "boomstick:buckshot",
-})
+boomstick_api.create_new_category("shotgun", "weapon",
+    {projectiles = 9, ammo_type = "boomstick:buckshot"})
 
 -- pump shotgun weapon category
 boomstick_api.create_new_category("pump_shotgun", "shotgun", {
     cycle_weapon_sounds = {"boomstick_shotgun_rack"},
-    fire_weapon_sounds = {"boomstick_shotgun_fire_1", "boomstick_shotgun_fire_2", "boomstick_shotgun_fire_3"},
+    fire_weapon_sounds = {
+        "boomstick_shotgun_fire_1",
+        "boomstick_shotgun_fire_2",
+        "boomstick_shotgun_fire_3"
+    },
     load_weapon_sounds = {"boomstick_shotgun_load_1", "boomstick_shotgun_load_2"}
 })
 

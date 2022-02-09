@@ -5,12 +5,25 @@ function boomstick_api.get_weapon_data(item_definition)
     return item_definition.boomstick_weapon_data
 end
 
+
 function boomstick_api.item_is_weapon(item_definition)
     if boomstick_api.get_weapon_data(item_definition) == nil then
         return false
     end
     return true
 end
+
+
+--- Registers a callback function to be called when any projectile has a collision.
+--  If you'd like certain behavior to happen when a projectile collides with
+--  something, you can pass another function as an argument to this function,
+--  and it will be executed when a projectile collides with something.
+--
+-- @tparam function func Function to be executed when a projectle has a collision.
+function boomstick_api.register_projectile_collision(func)
+    table.insert(boomstick_api.data.collision_callbacks, func)
+end
+
 
 --- Returns a boolean for whether a weapon is at maximum capacity (i.e no more
 --  ammo will fit).
@@ -25,12 +38,14 @@ function boomstick_api.weapon_is_full(item_definition)
     local capacity = weapon_data.capacity
 
     if rounds_loaded < capacity then
-        boomstick_api.debug("rounds_loaded < capacity (%d < %d)", {rounds_loaded, capacity})
+        boomstick_api.debug("rounds_loaded < capacity (%d < %d)",
+            {rounds_loaded, capacity})
         full = false
     end
 
     return full
 end
+
 
 --- Returns a boolean for whether or not a weapon is empty (i.e not loaded).
 --
@@ -49,6 +64,7 @@ function boomstick_api.weapon_is_empty(item_definition)
 
     return false
 end
+
 
 --- Returns a boolean for whether or not a weapon is ready to fire.
 --
@@ -69,11 +85,13 @@ function boomstick_api.weapon_is_cocked(item_definition)
     return false
 end
 
+
 function boomstick_api.validate_weapon_data(data)
     local keys = {"name", "category", "item_name", "capacity", "textures", "wield_scale"}
 
     return boomstick_api.validate_table(keys, data)
 end
+
 
 function boomstick_api.create_new_weapon(new_weapon_data)
     print("HEYYYYYYYYYYYYYYYYY")
@@ -111,14 +129,17 @@ function boomstick_api.create_new_weapon(new_weapon_data)
 
 end
 
+
 function boomstick_api.create_new_category(name, base, category)
     -- Inherit any default values from a base, if one is provided.
     if base ~= nil then
-        category = boomstick_api.table_merge(boomstick_api.data.categories[base], category)
+        category =
+            boomstick_api.table_merge(boomstick_api.data.categories[base], category)
     end
 
     boomstick_api.data.categories[name] = category
 end
+
 
 function boomstick_api.cycle_weapon(itemstack, user)
     -- TODO: this should also call a function that renders a shell being ejected. if the
@@ -139,13 +160,16 @@ function boomstick_api.cycle_weapon(itemstack, user)
     local sound_table = {pos = player_position, gain = 1.5, max_hear_distance = 5}
 
     minetest.sound_play(sound_spec, sound_table, false)
-    --weapon_data.cocked = true
+    -- weapon_data.cocked = true
 
     minetest.after(weapon_data.cycle_cooldown, function()
         weapon_data.cocked = true
-    end)
+    end
+)
 
 end
+
+
 boomstick_api.weapon_cycle_function = boomstick_api.cycle_weapon
 
 --- Fires a weapon.
@@ -170,6 +194,7 @@ function boomstick_api.fire_weapon(itemstack, user, pointed_thing)
 
     return itemstack
 end
+
 
 boomstick_api.weapon_fire_function = boomstick_api.fire_weapon
 
@@ -198,6 +223,7 @@ function boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
     weapon_data.rounds_loaded = weapon_data.rounds_loaded - 1
 end
 
+
 --- Fires a weapon as if it is empty.
 -- **Note:** It is usually not necesary to call this function directly unless
 -- you are extending the mod or making custom behavior.
@@ -213,6 +239,7 @@ function boomstick_api.fire_empty_weapon(weapon_data, user)
     minetest.sound_play(sound_spec, sound_table, false)
 end
 
+
 function boomstick_api.load_weapon(held_itemstack, user)
     -- Loads a single round into a weapon.
 
@@ -226,7 +253,9 @@ function boomstick_api.load_weapon(held_itemstack, user)
     for i, inv_itemstack in ipairs(inv:get_list("main")) do
         repeat
             if not boomstick_api.can_load_weapon(inv_itemstack, held_itemstack) then
-                do break end
+                do
+                    break
+                end
             end
 
             local inv_itemstack_def = inv_itemstack:get_definition()
@@ -245,11 +274,13 @@ function boomstick_api.load_weapon(held_itemstack, user)
 
             minetest.after(weapon_data.reload_delay, function()
                 weapon_data.ammo_ready = true
-            end)
+            end
+)
         until true
     end
     return held_itemstack
 end
+
 
 boomstick_api.weapon_load_function = boomstick_api.load_weapon
 
@@ -275,8 +306,8 @@ function boomstick_api.can_load_weapon(inventory_item, ammo_item)
         return false
     end
 
-    --TODO: This will only account for 1:1 relationships between a weapon
-    --and its ammo. Update to use groups for weapons that support it.
+    -- TODO: This will only account for 1:1 relationships between a weapon
+    -- and its ammo. Update to use groups for weapons that support it.
     if weapon_data.ammo_type ~= ammo_item:get_name() then
         return false
     end
@@ -292,19 +323,25 @@ function boomstick_api.can_load_weapon(inventory_item, ammo_item)
     return true
 end
 
-function boomstick_api.launch_projectiles(player, weapon_data, pointed_thing, projectiles)
 
-    local projectile_data = weapon_data.projectile_data
-    local vel = projectile_data._velocity
+function boomstick_api.launch_projectiles(player,
+    weapon_data,
+    pointed_thing,
+    projectiles)
 
-    local projectile = PelletProjectile
+    local projectile = weapon_data.projectile_data
+    local vel = projectile._velocity
+
     projectile:set_owner(player)
-    projectile:register_on_collision(boomstick_api.on_target_block_hit)
 
-    local entity_name = projectile_data._entity_name
+    for _, func in pairs(boomstick_api.data.collision_callbacks) do
+        projectile:register_on_collision(func)
+    end
+
+    local entity_name = projectile._entity_name
 
     for i = 1, projectiles do
-        --TODO: This whole loop needs to be broken down into functions
+        -- TODO: This whole loop needs to be broken down into functions
         local accuracy = weapon_data.accuracy
         local rndacc = (100 - accuracy) or 0
 
@@ -331,11 +368,7 @@ function boomstick_api.launch_projectiles(player, weapon_data, pointed_thing, pr
 
         pellet:set_velocity(pellet_velocity)
 
-        local pellet_rotation = {
-            x = 0,
-            y = yaw + math.pi,
-            z = -vertical
-        }
+        local pellet_rotation = {x = 0, y = yaw + math.pi, z = -vertical}
 
         pellet:set_rotation(pellet_rotation)
 
@@ -351,7 +384,8 @@ function boomstick_api.launch_projectiles(player, weapon_data, pointed_thing, pr
     end
 end
 
-boomstick_api.create_new_category("weapon", nil,  {
+
+boomstick_api.create_new_category("weapon", nil, {
     rounds_loaded = 0,
     accuracy = 95,
     cycle_cooldown = 0.25,
@@ -360,5 +394,5 @@ boomstick_api.create_new_category("weapon", nil,  {
     action = "manual", -- Currently unused
     cocked = true,
     ammo_ready = true,
-    wield_scale = {x = 1.5, y = 1.5, z = 1},
+    wield_scale = {x = 1.5, y = 1.5, z = 1}
 })
