@@ -1,6 +1,5 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
-
---- i am a module here called boomstick!
+local S = minetest.get_translator()
 
 dofile(modpath .. "/api.lua")
 
