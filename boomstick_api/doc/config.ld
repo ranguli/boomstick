@@ -7,7 +7,7 @@ template = true
 dir = '../doc/build'
 topics = 'topics'
 use_markdown_titles = true
-file = {'../api/helpers.lua', '../api/projectile.lua', '../api/weapon.lua'}
+file = {'../helpers.lua', '../projectile.lua', '../weapon.lua'}
 format = 'discount'
 sort_modules=true
 kind_names={topic='Manual'}
