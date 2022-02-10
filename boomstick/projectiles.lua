@@ -19,10 +19,6 @@ local pellet = {
     }
 }
 
-print("HEY")
 PelletProjectile = boomstick_api.Projectile:new(pellet)
-
-print(dump(PelletProjectile))
-
 minetest.register_entity("boomstick:pellet", PelletProjectile)
 

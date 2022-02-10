@@ -14,6 +14,34 @@ function boomstick_api.item_is_weapon(item_definition)
 end
 
 
+--- Registers a callback function that allows or denies a player to fire a weapon based on your own custom logic.
+-- If you'd like to allow or deny the use of weapons at your discretion,
+-- register a function that **must return a boolean value**. If it returns `true`, the player can fire their weapon.
+-- This is useful for implementing things like 'no guns zones' (for spawn or
+-- public areas), or even russian roulette.
+--
+-- **Note:** This is distinct from a normal callback, in that the callback function is not only called but its return value can affect execution of other code.
+-- @usage
+-- -- Custom logic that is executed when a weapon is fired
+-- local custom_fire_condition = function(player) {
+--     -- no weapons for dave
+--     if player:get_player_name() == "dave" then
+--         return false
+--     end
+--
+--     return true
+-- }
+--
+-- -- Our function will now be called when a player fires a weapon.
+-- -- If the player's name is dave, their weapon will not fire.
+-- boomstick_api.register_custom_fire_condition(custom_fire_condition)
+--
+-- @tparam function func Function returning a boolean that will allow/deny a weapon to be fired.
+function boomstick_api.register_weapon_fire_condition(func)
+    boomstick_api.register_callback(func, "fire_condition")
+end
+
+
 --- Registers a callback function to be called when any projectile has a collision.
 --  If you'd like certain behavior to happen when a projectile collides with
 --  something, you can pass another function as an argument to this function,
@@ -21,7 +49,24 @@ end
 --
 -- @tparam function func Function to be executed when a projectle has a collision.
 function boomstick_api.register_projectile_collision(func)
-    table.insert(boomstick_api.data.collision_callbacks, func)
+    boomstick_api.register_callback(func, "projectile_collision")
+end
+
+
+--- Registers a callback function to be called when any projectile has a collision.
+--  If you'd like certain behavior to happen when a projectile collides with
+--  something, you can pass another function as an argument to this function,
+--  and it will be executed when a projectile collides with something.
+--
+-- @tparam function func Function to be executed when a projectle has a collision.
+function boomstick_api.register_weapon_fire(func)
+    boomstick_api.register_callback(func, "weapon_fired")
+end
+
+
+function boomstick_api.register_callback(func, event_name)
+    table.insert(boomstick_api.data.callbacks,
+        {callback_type = event_name, callback_func = func})
 end
 
 
@@ -94,7 +139,6 @@ end
 
 
 function boomstick_api.create_new_weapon(new_weapon_data)
-    print("HEYYYYYYYYYYYYYYYYY")
     local weapon_category = new_weapon_data.category
 
     if not boomstick_api.validate_weapon_data(new_weapon_data) then
@@ -114,8 +158,6 @@ function boomstick_api.create_new_weapon(new_weapon_data)
     end
 
     boomstick_api.data.weapons[new_weapon_data.name] = new_weapon_data
-
-    print(dump(new_weapon_data))
 
     minetest.register_tool(new_weapon_data.entity_name, {
         description = new_weapon_data.description,
@@ -180,6 +222,17 @@ function boomstick_api.fire_weapon(itemstack, user, pointed_thing)
     local item_def = itemstack:get_definition()
     local weapon_data = itemstack:get_definition().boomstick_weapon_data
 
+    for i, callback in pairs(boomstick_api.data.callbacks) do
+        if callback.callback_type == "fire_condition" then
+            local can_fire = callback.callback_func(user)
+            if can_fire == false then
+                return
+            end
+        elseif callback.callback_type == "weapon_fired" then
+            callback.callback_func(user)
+        end
+    end
+
     if not boomstick_api.weapon_is_cocked(item_def) then
         return
     end
@@ -189,6 +242,7 @@ function boomstick_api.fire_weapon(itemstack, user, pointed_thing)
     else
         boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
         itemstack:add_wear(weapon_data.wear)
+
     end
 
     weapon_data.cocked = false
@@ -331,24 +385,25 @@ function boomstick_api.launch_projectiles(player,
 
     projectile:set_owner(player)
 
-    for _, func in pairs(boomstick_api.data.collision_callbacks) do
-        projectile:register_on_collision(func)
+    for i, callback in pairs(boomstick_api.data.callbacks) do
+        if callback.callback_type == "projectile_collision" then
+            projectile:register_on_collision(callback.callback_func)
+        end
     end
 
     local entity_name = projectile._entity_name
 
     for i = 1, projectiles do
         -- TODO: This whole loop needs to be broken down into functions
-        local accuracy = weapon_data.accuracy
-        local rndacc = (100 - accuracy) or 0
+        local accuracy = (100 - weapon_data.accuracy)
 
         local player_position = player:get_pos()
         player_position.y = player_position.y + 1.5
 
         local spawn_position = {
-            x = player_position.x + (math.random(-rndacc, rndacc) / 100),
-            y = player_position.y + (math.random(-rndacc, rndacc) / 100),
-            z = player_position.z + (math.random(-rndacc, rndacc) / 100)
+            x = player_position.x + (math.random(-accuracy, accuracy) / 100),
+            y = player_position.y + (math.random(-accuracy, accuracy) / 100),
+            z = player_position.z + (math.random(-accuracy, accuracy) / 100)
         }
 
         local pellet = minetest.add_entity(spawn_position, entity_name)

@@ -40,4 +40,4 @@ luac.out
 *.hex
 
 # Doc
-doc/build/
+boomstick_api/doc/build/
