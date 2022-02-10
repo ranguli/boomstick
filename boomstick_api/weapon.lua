@@ -269,6 +269,7 @@ function boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
     local projectiles = weapon_data.projectiles
 
     boomstick_api.launch_projectiles(user, weapon_data, pointed_thing, projectiles)
+    boomstick_api.recoil(user, weapon_data.recoil)
 
     minetest.sound_play(sound_spec, sound_table, false)
     weapon_data.rounds_loaded = weapon_data.rounds_loaded - 1
@@ -436,6 +437,26 @@ function boomstick_api.launch_projectiles(player,
     end
 end
 
+function boomstick_api.recoil(player, recoil_amount)
+    local muzzle_climb = boomstick_api.calculate_muzzle_climb(recoil_amount)
+    local muzzle_sway = boomstick_api.calculate_muzzle_sway(recoil_amount)
+
+    local player_pitch = player:get_look_vertical()
+    player:set_look_vertical(player_pitch - muzzle_climb)
+
+    local player_yaw = player:get_look_horizontal()
+    player:set_look_horizontal(player_yaw + muzzle_sway)
+end
+
+function boomstick_api.calculate_muzzle_climb(recoil)
+    -- Get between
+    return math.random(recoil*50, recoil*125) / 2000
+end
+
+function boomstick_api.calculate_muzzle_sway(recoil)
+    -- Get between
+    return math.random(-recoil*125, recoil*125) / 3000
+end
 
 boomstick_api.create_new_category("weapon", nil, {
     rounds_loaded = 0,
