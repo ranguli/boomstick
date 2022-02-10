@@ -4,7 +4,7 @@ Minetest mod that adds boomsticks and other weapons. This mod draws inspiration 
 ## Features
 - **Contributor/mod-friendly** Boomstick provides a well-documented API for creating your own weapons.
 - Localization support (translators are needed)
-- **New blocks**:
+- **New blocks**
   - The **Target Block** plays a noise when hit by a projectile.
 
 ## To-Do:
@@ -19,7 +19,7 @@ Minetest mod that adds boomsticks and other weapons. This mod draws inspiration 
 - [ ] Document the API
 - [ ] Add knock-back when hit
 - [ ] Add an anti-gun block
-- [ ] Add durability effects
+- [x] Add durability effects
 - [ ] Add a damage block that sends a chat message with the amount of damage dealt
 - [ ] Loaded ammunition does not persist after restart
 - [ ] Smoke particles

@@ -188,6 +188,7 @@ function boomstick_api.fire_weapon(itemstack, user, pointed_thing)
         boomstick_api.fire_empty_weapon(weapon_data, user)
     else
         boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
+        itemstack:add_wear(weapon_data.wear)
     end
 
     weapon_data.cocked = false
@@ -213,11 +214,7 @@ function boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
 
     local projectiles = weapon_data.projectiles
 
-    if projectiles == 1 then
-        boomstick_api.launch_projectile(user, weapon_data, pointed_thing)
-    else
-        boomstick_api.launch_projectiles(user, weapon_data, pointed_thing, projectiles)
-    end
+    boomstick_api.launch_projectiles(user, weapon_data, pointed_thing, projectiles)
 
     minetest.sound_play(sound_spec, sound_table, false)
     weapon_data.rounds_loaded = weapon_data.rounds_loaded - 1
@@ -387,12 +384,13 @@ end
 
 boomstick_api.create_new_category("weapon", nil, {
     rounds_loaded = 0,
-    accuracy = 95,
+    accuracy = 75,
     cycle_cooldown = 0.25,
     reload_delay = 0.75,
     durability = 1000, -- Currently used
     action = "manual", -- Currently unused
     cocked = true,
     ammo_ready = true,
+    wear = 2,
     wield_scale = {x = 1.5, y = 1.5, z = 1}
 })
