@@ -44,6 +44,7 @@ function is_near_antigun_node(player)
     local antigun_nodes = minetest.find_node_near(player_pos, 10, "boomstick:antigun")
 
     if antigun_nodes ~= nil then
+        minetest.chat_send_player(player:get_player_name(), "Weapons are prohibited in this area!")
         return false
     end
 
