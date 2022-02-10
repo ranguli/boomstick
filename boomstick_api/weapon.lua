@@ -269,6 +269,7 @@ function boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
     local projectiles = weapon_data.projectiles
 
     boomstick_api.launch_projectiles(user, weapon_data, pointed_thing, projectiles)
+    boomstick_api.recoil(user, weapon_data.recoil)
 
     minetest.sound_play(sound_spec, sound_table, false)
     weapon_data.rounds_loaded = weapon_data.rounds_loaded - 1
@@ -436,6 +437,46 @@ function boomstick_api.launch_projectiles(player,
     end
 end
 
+--- Pushes the player's view up, simulating recoil.
+--
+-- **Note:** It is usually not necesary to call this function directly unless
+-- you are extending the mod or making custom behavior.
+--
+-- @param user - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who will experience recoil.
+-- @tparam number recoil - A weapon [ItemStack](https://minetest.gitlab.io/minetest/class-reference/#itemstack)
+function boomstick_api.recoil(player, recoil)
+    local muzzle_climb = boomstick_api.calculate_muzzle_climb(recoil)
+    local muzzle_sway = boomstick_api.calculate_muzzle_sway(recoil)
+
+    local player_pitch = player:get_look_vertical()
+    player:set_look_vertical(player_pitch - muzzle_climb)
+
+    local player_yaw = player:get_look_horizontal()
+    player:set_look_horizontal(player_yaw + muzzle_sway)
+
+    boomstick_api.calculate_knockback(player, recoil)
+end
+
+function boomstick_api.calculate_muzzle_climb(recoil)
+    print(math.random(recoil/2, recoil*2) / 100)
+    return math.random(recoil/2, recoil*2) / 100
+end
+
+function boomstick_api.calculate_muzzle_sway(recoil)
+    return math.random(-recoil*2, recoil*2) / 100
+end
+
+--- Pushes the player backwards based on recoil.
+--
+-- **Note:** It is usually not necesary to call this function directly unless
+-- you are extending the mod or making custom behavior.
+--
+-- @param user - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who will experience recoil.
+-- @tparam number recoil -
+function boomstick_api.calculate_knockback(player, recoil)
+    local look_dir = player:get_look_dir()
+    player:add_velocity({x = -look_dir.x*recoil, y = -look_dir.y*recoil, z = 0})
+end
 
 boomstick_api.create_new_category("weapon", nil, {
     rounds_loaded = 0,
@@ -447,5 +488,6 @@ boomstick_api.create_new_category("weapon", nil, {
     cocked = true,
     ammo_ready = true,
     wear = 2,
+    recoil = 2,
     wield_scale = {x = 1.5, y = 1.5, z = 1}
 })

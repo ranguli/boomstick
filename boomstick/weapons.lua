@@ -1,6 +1,6 @@
 -- generic shotgun weapon category
 boomstick_api.create_new_category("shotgun", "weapon",
-    {projectiles = 9, ammo_type = "boomstick:buckshot"})
+    {projectiles = 9, ammo_type = "boomstick:buckshot", recoil = 3})
 
 -- pump shotgun weapon category
 boomstick_api.create_new_category("pump_shotgun", "shotgun", {
