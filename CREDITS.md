@@ -1,4 +1,5 @@
 # Credits
+Any piece of media not listed here is either original work, and licensed under CC0, or is from the excellent [rangedweapons](https://github.com/daviddoesminetest/rangedweapons) mod.
 
 ## Textures
 - [Buckshot Texture](https://opengameart.org/content/cannonball)
