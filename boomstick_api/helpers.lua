@@ -68,4 +68,12 @@ function boomstick_api.debug(string, table)
     end
 end
 
-
+--- Returns true if a mod exists
+-- @tparam string modname - The name of a mod.
+-- @return boolean - Whether or not a mod exists.
+function boomstick_api.mod_exists(modname)
+    if minetest.get_modpath(modname) ~= nil then
+        return true
+    end
+    return false
+end
