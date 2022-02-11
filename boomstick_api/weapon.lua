@@ -270,7 +270,7 @@ function boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
 
     boomstick_api.launch_projectiles(user, weapon_data, pointed_thing, projectiles)
     boomstick_api.recoil(user, weapon_data.recoil)
-    boomstick_api.knockback(user, recoil)
+    boomstick_api.knockback(user, weapon_data.recoil)
 
     minetest.sound_play(sound_spec, sound_table, false)
     weapon_data.rounds_loaded = weapon_data.rounds_loaded - 1
