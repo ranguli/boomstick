@@ -28,3 +28,32 @@ Minetest mod that adds boomsticks and other weapons. This mod draws inspiration 
 - [ ] Add settingtypes.txt for server owners
 - [ ] Add weapon privilidges for server owners
 - [ ] Add more weapons (revolver, rifle, etc)
+
+## Licensing
+
+### Code
+
+All code in this project is licensed under the GNU LGPL-2.1.
+
+Any piece of media not listed here is either original work that is licensed under CC0, or is from the excellent [rangedweapons](https://github.com/daviddoesminetest/rangedweapons) mod.
+
+### Assets
+
+| File                                                                                           | License                                                                                                                                                             |
+|------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [boomstick_projectile_pellet](https://opengameart.org/content/cannonball)                      | <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/cc-zero.png" width="100px"/> [CC-0](https://creativecommons.org/publicdomain/zero/1.0/)    |
+| [Grenade Texture](https://opengameart.org/content/16x16-grenades)                              | <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" width="100px"/> [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| [boomstick_empty_2.ogg](https://freesound.org/people/JakLocke/sounds/412294/)                  | <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by.png" width="100px"/> [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)          |
+| [boomstick_shotgun_fire.ogg](https://freesound.org/people/FilmmakersManual/sounds/522484/)     | <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/cc-zero.png" width="100px"/> [CC-0](https://creativecommons.org/publicdomain/zero/1.0/)    |
+| [boomstick_shotgun_load.ogg](https://freesound.org/people/FilmmakersManual/sounds/522288/)     | <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/cc-zero.png" width="100px"/> [CC-0](https://creativecommons.org/publicdomain/zero/1.0/)    |
+| [boomstick_revolver_load_1.ogg](https://freesound.org/people/Dredile/sounds/177863/)           | <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/cc-zero.png" width="100px"/> [CC-0](https://creativecommons.org/publicdomain/zero/1.0/)    |
+| [boomstick_shotgun_fire_2.ogg]()                                                               |                                                                                                                                                                     |
+| [boomstick_shotgun_fire_3.ogg]()                                                               |                                                                                                                                                                     |
+| [boomstick_revolver_load_2.ogg]()                                                              |                                                                                                                                                                     |
+| [boomstick_revolver_load_3.ogg]()                                                              |                                                                                                                                                                     |
+| [boomstick_revolver_load_4.ogg]()                                                              |                                                                                                                                                                     |
+| [boomstick_revolver_load_5.ogg]()                                                              |                                                                                                                                                                     |
+| [boomstick_revolver_empty_1.ogg](https://freesound.org/people/FilmmakersManual/sounds/522415/) | <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/cc-zero.png" width="100px"/> [CC-0](https://creativecommons.org/publicdomain/zero/1.0/)    |
+| [boomstick_revolver_cock_1.oog](https://soundbible.com/1988-Gun-Cocking-Fast.html)             | <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/cc-zero.png" width="100px"/> [CC-0](https://creativecommons.org/publicdomain/zero/1.0/)    |
+
+boomstick_ding.ogg<sup>[1](https://freesound.org/s/411089/)</sup> <sup>[2](https://freesound.org/s/127149/)</sup>
