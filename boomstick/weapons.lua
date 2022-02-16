@@ -1,6 +1,9 @@
 -- generic shotgun weapon category
-boomstick_api.create_new_category("shotgun", "weapon",
-    {projectiles = 9, ammo_type = "boomstick:buckshot", recoil = 3})
+boomstick_api.create_new_category("shotgun", "weapon", {
+    projectiles = 9,
+    ammo_type = "boomstick:buckshot",
+    recoil = 3
+})
 
 -- pump shotgun weapon category
 boomstick_api.create_new_category("pump_shotgun", "shotgun", {
@@ -13,8 +16,26 @@ boomstick_api.create_new_category("pump_shotgun", "shotgun", {
     load_weapon_sounds = {"boomstick_shotgun_load_1", "boomstick_shotgun_load_2"}
 })
 
+boomstick_api.create_new_category("old", "weapon", {
+    cycle_cooldown = 0.5,
+    reload_delay = 5.0,
+    action = "manual", -- Currently unused
+    wear = 10,
+    accuracy = 100,
+    projectiles = 1,
+    recoil = 5,
+    ammo_type = "boomstick:musket_charge",
+    cycle_weapon_sounds = {"boomstick_musket_cock"},
+    fire_weapon_sounds = {
+        "boomstick_shotgun_fire_1",
+        "boomstick_shotgun_fire_2",
+        "boomstick_shotgun_fire_3"
+    },
+    load_weapon_sounds = {"boomstick_musket_load_1"}
+})
+
 -- pump shotgun, the "Rustington"
-local data = {
+boomstick_api.create_new_weapon({
     name = "Rustington",
     description = "bang",
     category = "pump_shotgun",
@@ -28,6 +49,20 @@ local data = {
     },
     wield_scale = {x = 2, y = 2, z = 1},
     projectile_data = PelletProjectile
-}
+})
 
-boomstick_api.create_new_weapon(data)
+boomstick_api.create_new_weapon({
+    name = "Musket",
+    description = "bang",
+    category = "old",
+    item_name = "musket",
+    entity_name = "boomstick:musket",
+    capacity = 1,
+    textures = {
+        icon = "boomstick_musket.png",
+        default = "boomstick_musket.png",
+        reload = "boomstick_musket.png"
+    },
+    wield_scale = {x = 2, y = 2, z = 1},
+    projectile_data = BallProjectile
+})
