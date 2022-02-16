@@ -39,5 +39,3 @@ minetest.register_craftitem("boomstick:low_grade_powder", {
     inventory_image = "boomstick_low_grade_powder.png",
     wield_image = "boomstick_low_grade_powder.png"
 })
-
-

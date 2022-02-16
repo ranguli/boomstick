@@ -2,7 +2,7 @@ local S = minetest.get_translator()
 
 -- Wrought Iron Long Barrel
 minetest.register_craftitem("boomstick:wrought_iron_long_barrel", {
-    description = S("Wrought Iron Long Barrel"),
+    description = S("@1 @2 Barrel", S("Wrought Iron"), S("Long")),
     inventory_image = "boomstick_missing_texture.png",
     wield_image = "boomstick_missing_texture.png",
     stack_max = 1,
@@ -11,7 +11,7 @@ minetest.register_craftitem("boomstick:wrought_iron_long_barrel", {
 
 -- Wrought Iron Short Barrel
 minetest.register_craftitem("boomstick:wrought_iron_short_barrel", {
-    description = S("Wrought Iron Short Barrel"),
+    description = S("@1 @2 Barrel", S("Wrought Iron"), S("Short")),
     inventory_image = "boomstick_missing_texture.png",
     wield_image = "boomstick_missing_texture.png",
     stack_max = 1,
@@ -20,7 +20,7 @@ minetest.register_craftitem("boomstick:wrought_iron_short_barrel", {
 
 -- Cast Iron Long Barrel
 minetest.register_craftitem("boomstick:cast_iron_long_barrel", {
-    description = S("Cast Iron Long Barrel"),
+    description = S("@1 @2 Barrel", S("Cast Iron"), S("Long")),
     inventory_image = "boomstick_missing_texture.png",
     wield_image = "boomstick_missing_texture.png",
     stack_max = 1,
@@ -29,7 +29,7 @@ minetest.register_craftitem("boomstick:cast_iron_long_barrel", {
 
 -- Cast Iron Short Barrel
 minetest.register_craftitem("boomstick:cast_iron_short_barrel", {
-    description = S("Cast Iron Short Barrel"),
+    description = S("@1 @2 Barrel", S("Cast Iron"), S("Short")),
     inventory_image = "boomstick_missing_texture.png",
     wield_image = "boomstick_missing_texture.png",
     stack_max = 1,
@@ -38,7 +38,7 @@ minetest.register_craftitem("boomstick:cast_iron_short_barrel", {
 
 -- Stainless Steel Long Barrel
 minetest.register_craftitem("boomstick:stainless_steel_long_barrel", {
-    description = S("Stainless Steel Long Barrel"),
+    description = S("@1 @2 Barrel", S("Stainless Steel"), S("Long")),
     inventory_image = "boomstick_long_barrel.png",
     wield_image = "boomstick_long_barrel.png",
     stack_max = 1,
@@ -47,7 +47,7 @@ minetest.register_craftitem("boomstick:stainless_steel_long_barrel", {
 
 -- Stainless Steel Short Barrel
 minetest.register_craftitem("boomstick:stainless_steel_short_barrel", {
-    description = S("Stainless Steel Short Barrel"),
+    description = S("@1 @2 Barrel", S("Stainless Steel"), S("Short")),
     inventory_image = "boomstick_missing_texture.png",
     wield_image = "boomstick_missing_texture.png",
     stack_max = 1,

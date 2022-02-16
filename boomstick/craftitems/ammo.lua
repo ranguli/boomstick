@@ -4,20 +4,6 @@ local S = minetest.get_translator()
 -- Ammo Casings
 ----------------
 
--- Unsized Rifle Casing
-minetest.register_craftitem("boomstick:unsized_rifle_casing", {
-    description = S("Unsized Rifle Casing"),
-    inventory_image = "boomstick_556_casing.png",
-    wield_image = "boomstick_556_casing.png",
-})
-
--- Unsized Pistol Casing
-minetest.register_craftitem("boomstick:unsized_pistol_casing", {
-    description = S("Unsized Pistol Casing"),
-    inventory_image = "boomstick_9mm_casing.png",
-    wield_image = "boomstick_9mm_casing.png",
-})
-
 -- 5.56 Casing
 minetest.register_craftitem("boomstick:556_casing", {
     description = S("@1 Casing", S("5.56")),
@@ -105,7 +91,7 @@ minetest.register_craftitem("boomstick:buckshot", {
 
 -- Musket Charge
 minetest.register_craftitem("boomstick:musket_charge", {
-    description = S("Musket Charge"),
+    description = S("@1 Charge", S("Musket")),
     inventory_image = "boomstick_musket_charge.png",
     wield_image = "boomstick_musket_charge.png",
     stack_max = 1,

@@ -1,3 +1,5 @@
+local S = minetest.get_translator()
+
 local compatible_items = {}
 
 compatible_items["basic_materials:brass_ingot"] = {
@@ -100,7 +102,7 @@ function after_place_node(pos, placer)
 end
 
 minetest.register_node("boomstick:bulletmaker", {
-	description = "Bullet Maker",
+	description = S("@1 Maker", S("Bullet")),
 	groups = {cracky=2, choppy=2, oddly_breakable_by_hand=1},
     tiles = {
         "boomstick_bullet_maker_top.png",
@@ -115,4 +117,3 @@ minetest.register_node("boomstick:bulletmaker", {
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 })
-
