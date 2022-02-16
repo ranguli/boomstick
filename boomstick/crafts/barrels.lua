@@ -52,7 +52,7 @@ if boomstick_api.mod_exists("technic") and boomstick_api.mod_exists("basic_mater
     minetest.register_craft({
         output = 'boomstick:stainless_steel_short_barrel',
         recipe = {
-            {"technic:stainless_steel_ingot", "", ""},
+            {"", "", ""},
             {"", "technic:stainless_steel_ingot", ""},
             {"", "", "technic:stainless_steel_ingot"}
         }
