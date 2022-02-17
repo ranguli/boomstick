@@ -9,8 +9,10 @@ on:
       - '**'
 jobs:
   docs:
+    name: Deploy documentation to GitHub Pages
+    runs-on: ubuntu-latest
     steps:
-    - name: Deploy docs to Github Pages
+    - name: Run the action to move documentation
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
