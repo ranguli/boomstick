@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Boomstick API Documentation</title>
+    <link rel="stylesheet" href="../ldoc_fixed.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>boomstick</h1>
+
+<ul>
+  <li><a href="https://github.com/ranguli/boomstick">GitHub Project</a></li>
+  <li><a href="../index.html">Documentation</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><strong>boomstick.Projectile</strong></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/helpers.html">helpers</a></li>
+  <li><a href="../modules/weapon.html">weapon</a></li>
+</ul>
+<h2>Manual</h2>
+<ul class="nowrap">
+  <li><a href="../manual/getting_started.md.html">Getting Started</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>boomstick.Projectile</code></h1>
+<p>Projectile class from which custom projectiles can be created.</p>
+<p>
+
+</p>
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">local myprojectile = boomstick.Projectile:new({
+    _name = &quot;Pellet&quot;,
+    _item_name = &quot;pellet&quot;,
+    _entity_name = &quot;boomstick:pellet&quot;,
+
+    -- How fast our projectile will go (optional)
+    _velocity = 50,
+
+    -- How long until our projectile should despawn (optional)
+    _velocity = 50,
+
+    -- How much damage each projectile will do
+    _damage = 6,
+
+    initial_properties = {
+        -- Use a sprite for our projectile (instead of a mesh)
+        visual = &quot;sprite&quot;,
+        textures = {&quot;boomstick_projectile_pellet.png&quot;},
+
+        -- If we want our projectile to be able to hit things
+        physical = true,
+        collide_with_objects = true,
+
+        -- How big our projectile looks
+        visual_size = {y = 0.1, x = 0.1, z = 0.1},
+
+        -- How big our projectile is for collision purposes
+        collisionbox = {-0.01, 0, -0.01, 0.01, 0.01, 0.01}
+    }
+})
+
+-- Register the entity with the Minetest engine
+minetest.register_entity(&quot;boomstick:pellet&quot;, PelletProjectile)
+</pre>
+    </ul>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.Projectile:set_owner">boomstick_api.Projectile:set_owner (player)</a></td>
+	<td class="summary">Registers a callback function to be called when the projectile has a collision.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.Projectile:get_owner">boomstick_api.Projectile:get_owner (func)</a></td>
+	<td class="summary">Registers a callback function to be called when the projectile has a collision.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.Projectile:register_on_collision">boomstick_api.Projectile:register_on_collision (func)</a></td>
+	<td class="summary">Registers a callback function to be called when the projectile has a collision.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.Projectile:collision_is_projectile">boomstick_api.Projectile:collision_is_projectile (collision)</a></td>
+	<td class="summary">For determining whether or not a projectile collided with another projectile.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.Projectile:do_damage">boomstick_api.Projectile:do_damage (collision)</a></td>
+	<td class="summary">Deal damage to whatever object or node the projectile collided with.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "boomstick_api.Projectile:set_owner"></a>
+    <strong>boomstick_api.Projectile:set_owner (player)</strong>
+    </dt>
+    <dd>
+    Registers a callback function to be called when the projectile has a collision.
+  If you'd like certain behavior to happen when a projectile collides with
+  something, you can pass another function as an argument to this function,
+  and it will be executed when the projectile collides with something.</p>
+
+<p> <strong>Note:</strong> Unless you're doing something special, the owner of the weapon
+ should be the player who is holding it.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">player</span>
+            <span class="types"><span class="type">ObjectRef</span></span>
+         An <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a> of the player that will own the weapon.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.Projectile:get_owner"></a>
+    <strong>boomstick_api.Projectile:get_owner (func)</strong>
+    </dt>
+    <dd>
+    Registers a callback function to be called when the projectile has a collision.
+  If you'd like certain behavior to happen when a projectile collides with
+  something, you can pass another function as an argument to this function,
+  and it will be executed when the projectile collides with something.</p>
+
+<p> <strong>Note:</strong> It is usually not necesary to call this function directly to create a new weapon,
+ unless you are extending the mod or making custom behavior.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">function</span></span>
+         Function to be executed on collision.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.Projectile:register_on_collision"></a>
+    <strong>boomstick_api.Projectile:register_on_collision (func)</strong>
+    </dt>
+    <dd>
+    Registers a callback function to be called when the projectile has a collision.
+  If you'd like certain behavior to happen when a projectile collides with
+  something, you can pass another function as an argument to this function,
+  and it will be executed when the projectile collides with something.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">function</span></span>
+         Function to be executed on collision.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.Projectile:collision_is_projectile"></a>
+    <strong>boomstick_api.Projectile:collision_is_projectile (collision)</strong>
+    </dt>
+    <dd>
+    For determining whether or not a projectile collided with another projectile.
+ Sometimes (especially with shotguns) projectiles will collide with one
+ another. It is often necessary to check if a collision happened between two
+ projectiles, so that we can do something (usually ignore it). Otherwise
+ projectiles would deal damage to one another.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">collision</span>
+         Collision object returned by Minetest
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        whether or not the projectile collided with another
+ projectile.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.Projectile:do_damage"></a>
+    <strong>boomstick_api.Projectile:do_damage (collision)</strong>
+    </dt>
+    <dd>
+    Deal damage to whatever object or node the projectile collided with.
+ This is how we actually make projectiles do damage when they hit their
+ target.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">collision</span>
+         Collision object returned by Minetest
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        whether or not the projectile collided with another projectile.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
