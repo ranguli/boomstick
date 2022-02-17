@@ -1,3 +1,7 @@
+--- Assorted helper functions
+--
+--
+
 --- Add the values from table1 to table2, if they don't already exist.
 -- @param table1 - Table containing items
 -- @param table2 - Table containing items

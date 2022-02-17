@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Boomstick API Documentation</title>
+    <link rel="stylesheet" href="../ldoc_fixed.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>boomstick</h1>
+
+<ul>
+  <li><a href="https://github.com/ranguli/boomstick">GitHub Project</a></li>
+  <li><a href="../index.html">Documentation</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>helpers</strong></li>
+  <li><a href="../modules/weapon.html">weapon</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/boomstick.Projectile.html">boomstick.Projectile</a></li>
+</ul>
+<h2>Manual</h2>
+<ul class="nowrap">
+  <li><a href="../manual/getting_started.md.html">Getting Started</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>helpers</code></h1>
+<p>Assorted helper functions</p>
+<p>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.table_merge">boomstick_api.table_merge (table1, table2)</a></td>
+	<td class="summary">Add the values from table1 to table2, if they don't already exist.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.validate_table">boomstick_api.validate_table (keys, data)</a></td>
+	<td class="summary">Given a table and a set of keys, validate that the keys in the table exist.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.get_random_entry">boomstick_api.get_random_entry (table)</a></td>
+	<td class="summary">Returns a random item from a table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.get_random_sound">boomstick_api.get_random_sound (table)</a></td>
+	<td class="summary">Given a table of sounds, randomly select one and return a <a href="https://minetest.gitlab.io/minetest/sounds/#simplesoundspec">SimpleSoundSpec</a>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.debug">boomstick_api.debug (string, table)</a></td>
+	<td class="summary">Wrapper for <code>minetest.debug()</code> that will check if a debug flag is set in the mod settings before logging.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.mod_exists">boomstick_api.mod_exists (modname)</a></td>
+	<td class="summary">Returns true if a mod exists</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "boomstick_api.table_merge"></a>
+    <strong>boomstick_api.table_merge (table1, table2)</strong>
+    </dt>
+    <dd>
+    Add the values from table1 to table2, if they don't already exist.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">table1</span>
+
+<ul>
+    <li>Table containing items</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">table2</span>
+
+<ul>
+    <li>Table containing items</li>
+</ul>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table - Returns table2 with the unique items from table1 inserted.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.validate_table"></a>
+    <strong>boomstick_api.validate_table (keys, data)</strong>
+    </dt>
+    <dd>
+    Given a table and a set of keys, validate that the keys in the table exist.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">keys</span>
+
+<ul>
+    <li>Table containing keys</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">data</span>
+
+<ul>
+    <li>Table to be validated.</li>
+</ul>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean - Whether or not the table has all keys.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.get_random_entry"></a>
+    <strong>boomstick_api.get_random_entry (table)</strong>
+    </dt>
+    <dd>
+    Returns a random item from a table.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">table</span>
+         containing items
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        item from the table.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.get_random_sound"></a>
+    <strong>boomstick_api.get_random_sound (table)</strong>
+    </dt>
+    <dd>
+    Given a table of sounds, randomly select one and return a <a href="https://minetest.gitlab.io/minetest/sounds/#simplesoundspec">SimpleSoundSpec</a>.
+ This allows weapons (or anything with a sound) to randomly play different
+ sounds to add variety.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">table</span>
+         A table of strings, containing filenames of sounds.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table - A <a href="https://minetest.gitlab.io/minetest/sounds/#simplesoundspec">SimpleSoundSpec</a> with the name set to a random sound.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.debug"></a>
+    <strong>boomstick_api.debug (string, table)</strong>
+    </dt>
+    <dd>
+    Wrapper for <code>minetest.debug()</code> that will check if a debug flag is set in the mod settings before logging.
+ This is a work in progress.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">string</span>
+
+<ul>
+    <li>A string to log to the Minetest console for debugging purposes.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">table</span>
+
+<ul>
+    <li>A table containing printf-style arguments to be passed to <code>string.format()</code></li>
+</ul>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table - A <a href="https://minetest.gitlab.io/minetest/sounds/#simplesoundspec">SimpleSoundSpec</a> with the name set to a random sound.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.mod_exists"></a>
+    <strong>boomstick_api.mod_exists (modname)</strong>
+    </dt>
+    <dd>
+    Returns true if a mod exists
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">modname</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+
+<ul>
+    <li>The name of a mod.</li>
+</ul>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean - Whether or not a mod exists.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

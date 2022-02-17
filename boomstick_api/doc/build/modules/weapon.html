@@ -1,0 +1,522 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Boomstick API Documentation</title>
+    <link rel="stylesheet" href="../ldoc_fixed.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>boomstick</h1>
+
+<ul>
+  <li><a href="https://github.com/ranguli/boomstick">GitHub Project</a></li>
+  <li><a href="../index.html">Documentation</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/helpers.html">helpers</a></li>
+  <li><strong>weapon</strong></li>
+</ul>
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/boomstick.Projectile.html">boomstick.Projectile</a></li>
+</ul>
+<h2>Manual</h2>
+<ul class="nowrap">
+  <li><a href="../manual/getting_started.md.html">Getting Started</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>weapon</code></h1>
+<p>Weapons functions</p>
+<p>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.register_weapon_fire_condition">boomstick_api.register_weapon_fire_condition (func)</a></td>
+	<td class="summary">Registers a callback function that allows or denies a player to fire a weapon based on your own custom logic.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.register_projectile_collision">boomstick_api.register_projectile_collision (func)</a></td>
+	<td class="summary">Registers a callback function to be called when any projectile has a collision.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.register_weapon_fire">boomstick_api.register_weapon_fire (func)</a></td>
+	<td class="summary">Registers a callback function to be called when any projectile has a collision.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.weapon_is_full">boomstick_api.weapon_is_full (item_definition)</a></td>
+	<td class="summary">Returns a boolean for whether a weapon is at maximum capacity (i.e no more
+  ammo will fit).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.weapon_is_empty">boomstick_api.weapon_is_empty (item_definition)</a></td>
+	<td class="summary">Returns a boolean for whether or not a weapon is empty (i.e not loaded).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.weapon_is_cocked">boomstick_api.weapon_is_cocked (item_definition)</a></td>
+	<td class="summary">Returns a boolean for whether or not a weapon is ready to fire.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.fire_weapon">boomstick_api.fire_weapon (itemstack, user, pointed_thing)</a></td>
+	<td class="summary">Fires a weapon.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.fire_loaded_weapon">boomstick_api.fire_loaded_weapon (weapon_data, user, pointed_thing)</a></td>
+	<td class="summary">Fires a weapon as if it is loaded.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.fire_empty_weapon">boomstick_api.fire_empty_weapon (weapon_data, user)</a></td>
+	<td class="summary">Fires a weapon as if it is empty.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.can_load_weapon">boomstick_api.can_load_weapon (inventory_item, ammo_item)</a></td>
+	<td class="summary">Returns a boolean for whether or not a given weapon can be loaded.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.recoil">boomstick_api.recoil (player, recoil)</a></td>
+	<td class="summary">Pushes the player's view up, simulating recoil.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.knockback">boomstick_api.knockback (player, recoil)</a></td>
+	<td class="summary">Pushes the player backwards based on recoil.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "boomstick_api.register_weapon_fire_condition"></a>
+    <strong>boomstick_api.register_weapon_fire_condition (func)</strong>
+    </dt>
+    <dd>
+    Registers a callback function that allows or denies a player to fire a weapon based on your own custom logic.
+ If you'd like to allow or deny the use of weapons at your discretion,
+ register a function that <strong>must return a boolean value</strong>. If it returns <code>true</code>, the player can fire their weapon.
+ This is useful for implementing things like 'no guns zones' (for spawn or
+ public areas), or even russian roulette.</p>
+
+<p> <strong>Note:</strong> This is distinct from a normal callback, in that the callback function is not only called but its return value can affect execution of other code.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">function</span></span>
+         Function returning a boolean that will allow/deny a weapon to be fired.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Custom logic that is executed when a weapon is fired
+</span><span class="keyword">local</span> custom_fire_condition = <span class="keyword">function</span>(player) {
+    <span class="comment">-- no weapons for dave
+</span>    <span class="keyword">if</span> player:get_player_name() == <span class="string">"dave"</span> <span class="keyword">then</span>
+        <span class="keyword">return</span> <span class="keyword">false</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">return</span> <span class="keyword">true</span>
+}
+
+<span class="comment">-- Our function will now be called when a player fires a weapon.
+</span><span class="comment">-- If the player's name is dave, their weapon will not fire.
+</span>boomstick_api.register_custom_fire_condition(custom_fire_condition)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.register_projectile_collision"></a>
+    <strong>boomstick_api.register_projectile_collision (func)</strong>
+    </dt>
+    <dd>
+    Registers a callback function to be called when any projectile has a collision.
+  If you'd like certain behavior to happen when a projectile collides with
+  something, you can pass another function as an argument to this function,
+  and it will be executed when a projectile collides with something.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">function</span></span>
+         Function to be executed when a projectle has a collision.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.register_weapon_fire"></a>
+    <strong>boomstick_api.register_weapon_fire (func)</strong>
+    </dt>
+    <dd>
+    Registers a callback function to be called when any projectile has a collision.
+  If you'd like certain behavior to happen when a projectile collides with
+  something, you can pass another function as an argument to this function,
+  and it will be executed when a projectile collides with something.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">function</span></span>
+         Function to be executed when a projectle has a collision.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.weapon_is_full"></a>
+    <strong>boomstick_api.weapon_is_full (item_definition)</strong>
+    </dt>
+    <dd>
+    Returns a boolean for whether a weapon is at maximum capacity (i.e no more
+  ammo will fit).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">item_definition</span>
+         An <a href="https://minetest.gitlab.io/minetest/definition-tables/#item-definition">Item Definition</a> of a weapon, returned by <a href="https://minetest.gitlab.io/minetest/class-reference/#methods_2">get_definition()</a>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean - Indicating if the weapon is full.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.weapon_is_empty"></a>
+    <strong>boomstick_api.weapon_is_empty (item_definition)</strong>
+    </dt>
+    <dd>
+    Returns a boolean for whether or not a weapon is empty (i.e not loaded). </p>
+
+<p>  A convenience function that returns the <code>rounds_loaded</code> field from the weapon
+  data.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">item_definition</span>
+         An <a href="https://minetest.gitlab.io/minetest/definition-tables/#item-definition">Item Definition</a> of a weapon, returned by <a href="https://minetest.gitlab.io/minetest/class-reference/#methods_2">get_definition()</a>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean - Indicating if the weapon is empty.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.weapon_is_cocked"></a>
+    <strong>boomstick_api.weapon_is_cocked (item_definition)</strong>
+    </dt>
+    <dd>
+    Returns a boolean for whether or not a weapon is ready to fire. </p>
+
+<p>  A convenience function that returns the <code>cocked</code> field from the weapon
+  data. A weapon is considered cocked (and therefore ready to fire) when it is
+  loaded and no cooldown timers are currently active on it.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">item_definition</span>
+         An <a href="https://minetest.gitlab.io/minetest/definition-tables/#item-definition">Item Definition</a> of a weapon, returned by <a href="https://minetest.gitlab.io/minetest/class-reference/#methods_2">get_definition()</a>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean - Indicating if the weapon is ready to fire.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.fire_weapon"></a>
+    <strong>boomstick_api.fire_weapon (itemstack, user, pointed_thing)</strong>
+    </dt>
+    <dd>
+    Fires a weapon.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">itemstack</span>
+
+<ul>
+    <li>An <a href="https://minetest.gitlab.io/minetest/class-reference/#itemstack">ItemStack</a> passed by Minetest when called as a callback.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">user</span>
+
+<ul>
+    <li>A player <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a> passed by Minetest when called as a callback. This is the player who fired the weapon.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">pointed_thing</span>
+
+<ul>
+    <li><a href="https://minetest.gitlab.io/minetest/representations-of-simple-things/#pointed_thing">pointed_thing</a> passed by Minetest when called as a callback.</li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.fire_loaded_weapon"></a>
+    <strong>boomstick_api.fire_loaded_weapon (weapon_data, user, pointed_thing)</strong>
+    </dt>
+    <dd>
+    Fires a weapon as if it is loaded.
+ <strong>Note:</strong> It is usually not necesary to call this function directly unless
+ you are extending the mod or making custom behavior.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">weapon_data</span>
+
+<ul>
+    <li>Weapon data for a weapon.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">user</span>
+
+<ul>
+    <li>A player <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a> passed by Minetest when called as a callback. This is the player who fired the weapon.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">pointed_thing</span>
+
+<ul>
+    <li><a href="https://minetest.gitlab.io/minetest/representations-of-simple-things/#pointed_thing">pointed_thing</a> passed by Minetest when called as a callback.</li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.fire_empty_weapon"></a>
+    <strong>boomstick_api.fire_empty_weapon (weapon_data, user)</strong>
+    </dt>
+    <dd>
+    Fires a weapon as if it is empty.
+ <strong>Note:</strong> It is usually not necesary to call this function directly unless
+ you are extending the mod or making custom behavior.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">weapon_data</span>
+
+<ul>
+    <li>Weapon data for a weapon.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">user</span>
+
+<ul>
+    <li>A player <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a> passed by Minetest when called as a callback. This is the player who fired the weapon.</li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.can_load_weapon"></a>
+    <strong>boomstick_api.can_load_weapon (inventory_item, ammo_item)</strong>
+    </dt>
+    <dd>
+    Returns a boolean for whether or not a given weapon can be loaded. </p>
+
+<p> Given one item (typically a weapon from an inventory), and a second
+ item (typically an ammo stack from an inventory), return whether or not
+ the weapon can be loaded. A weapon can be loaded if it is not empty, not
+ full, and not under any active reload cooldown.</p>
+
+<p> <strong>Note:</strong> This function nor the rest of the API handle the concept of a
+ weapon item having a stack size of >1.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">inventory_item</span>
+         A weapon <a href="https://minetest.gitlab.io/minetest/class-reference/#itemstack">ItemStack</a>
+        </li>
+        <li><span class="parameter">ammo_item</span>
+         An ammo <a href="https://minetest.gitlab.io/minetest/class-reference/#itemstack">ItemStack</a>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean - Incidating whether the weapon can be loaded.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.recoil"></a>
+    <strong>boomstick_api.recoil (player, recoil)</strong>
+    </dt>
+    <dd>
+    Pushes the player's view up, simulating recoil. </p>
+
+<p> <strong>Note:</strong> It is usually not necesary to call this function directly unless
+ you are extending the mod or making custom behavior.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">player</span>
+
+<ul>
+    <li>A player <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a>. This is the player who will experience recoil.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">recoil</span>
+            <span class="types"><span class="type">number</span></span>
+
+<ul>
+    <li>A weapon <a href="https://minetest.gitlab.io/minetest/class-reference/#itemstack">ItemStack</a></li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.knockback"></a>
+    <strong>boomstick_api.knockback (player, recoil)</strong>
+    </dt>
+    <dd>
+    Pushes the player backwards based on recoil. </p>
+
+<p> <strong>Note:</strong> It is usually not necesary to call this function directly unless
+ you are extending the mod or making custom behavior.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">player</span>
+
+<ul>
+    <li>A player <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a>. This is the player who will experience recoil.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">recoil</span>
+            <span class="types"><span class="type">number</span></span>
+         -
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

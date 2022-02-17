@@ -1,4 +1,4 @@
---- yeah
+--- Weapons functions
 --
 --
 function boomstick_api.get_weapon_data(item_definition)
@@ -444,7 +444,7 @@ end
 -- **Note:** It is usually not necesary to call this function directly unless
 -- you are extending the mod or making custom behavior.
 --
--- @param user - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who will experience recoil.
+-- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who will experience recoil.
 -- @tparam number recoil - A weapon [ItemStack](https://minetest.gitlab.io/minetest/class-reference/#itemstack)
 function boomstick_api.recoil(player, recoil)
     local muzzle_climb = boomstick_api.calculate_muzzle_climb(recoil)
@@ -474,7 +474,7 @@ end
 -- **Note:** It is usually not necesary to call this function directly unless
 -- you are extending the mod or making custom behavior.
 --
--- @param user - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who will experience recoil.
+-- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who will experience recoil.
 -- @tparam number recoil -
 function boomstick_api.knockback(player, recoil)
     local look_dir = player:get_look_dir()
