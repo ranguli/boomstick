@@ -8,6 +8,15 @@ minetest.register_node("boomstick:target", {
     groups = {tree = 1, choppy = 3, oddly_breakable_by_hand = 1}
 })
 
+minetest.register_craft({
+    output = "boomstick:target",
+    recipe = {
+        {"technic:wrought_iron_ingot", "technic:wrought_iron_ingot", "technic:wrought_iron_ingot"},
+        {"technic:wrought_iron_ingot", "group:boomstick_ammo", "technic:wrought_iron_ingot"},
+        {"technic:wrought_iron_ingot", "technic:wrought_iron_ingot", "technic:wrought_iron_ingot"}
+    }
+})
+
 -- Callback for when the target block is hit with a projectile.
 function on_target_block_hit(projectile, collision)
     if collision.type ~= "node" then

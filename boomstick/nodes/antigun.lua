@@ -22,4 +22,13 @@ function is_near_antigun_node(player)
     return true
 end
 
+minetest.register_craft({
+    output = "boomstick:antigun",
+    recipe = {
+        {"technic:wrought_iron_ingot", "default:mese_crystal", "technic:wrought_iron_ingot"},
+        {"technic:wrought_iron_ingot", "group:boomstick_ammo", "technic:wrought_iron_ingot"},
+        {"technic:wrought_iron_ingot", "technic:wrought_iron_ingot", "technic:wrought_iron_ingot"}
+    }
+})
+
 boomstick_api.register_weapon_fire_condition(is_near_antigun_node)

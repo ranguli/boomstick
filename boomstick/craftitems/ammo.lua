@@ -32,7 +32,6 @@ minetest.register_craftitem("boomstick:9mm_casing", {
 -- 9mm Projectile
 minetest.register_craftitem("boomstick:9mm_projectile", {
     description = S("@1 Projectile", S("9mm")),
-    groups = {boomstick_pellets = 1},
     inventory_image = "boomstick_9mm_projectile.png",
     wield_image = "boomstick_9mm_projectile.png",
     wield_scale = {x = 0.5, y = 0.5, z = 0.5}
@@ -41,7 +40,6 @@ minetest.register_craftitem("boomstick:9mm_projectile", {
 -- 5.56 Projectile
 minetest.register_craftitem("boomstick:556_projectile", {
     description = S("@1 Projectile", S("5.56")),
-    groups = {boomstick_pellets = 1},
     inventory_image = "boomstick_missing_texture.png",
     wield_image = "boomstick_missing_texture.png",
     wield_scale = {x = 0.5, y = 0.5, z = 0.5}
@@ -50,7 +48,6 @@ minetest.register_craftitem("boomstick:556_projectile", {
 -- 7.62x39 Projectile
 minetest.register_craftitem("boomstick:762x39_projectile", {
     description = S("@1 Projectile", S("7.62x39")),
-    groups = {boomstick_pellets = 1},
     inventory_image = "boomstick_missing_texture.png",
     wield_image = "boomstick_missing_texture.png",
     wield_scale = {x = 0.5, y = 0.5, z = 0.5}
@@ -68,7 +65,6 @@ minetest.register_craftitem("boomstick:musket_ball", {
 -- Shotgun Pellets
 minetest.register_craftitem("boomstick:pellets", {
     description = S("Pellets"),
-    groups = {boomstick_pellets = 1},
     inventory_image = "boomstick_pellets.png",
     wield_image = "boomstick_pellets.png",
     wield_scale = {x = 0.5, y = 0.5, z = 0.5}
@@ -86,7 +82,8 @@ minetest.register_craftitem("boomstick:buckshot", {
     stack_max = 25,
     wield_scale = {x = 0.25, y = 0.25, z = 0.25},
     on_secondary_use = boomstick_api.weapon_load_function,
-    range = 1
+    range = 1,
+    groups = {boomstick_ammo = 1}
 })
 
 -- Musket Charge
@@ -96,7 +93,8 @@ minetest.register_craftitem("boomstick:musket_charge", {
     wield_image = "boomstick_musket_charge.png",
     stack_max = 1,
     on_secondary_use = boomstick_api.weapon_load_function,
-    range = 1
+    range = 1,
+    groups = {boomstick_ammo = 1}
 })
 
 -- 9mm Ammo
@@ -107,7 +105,8 @@ minetest.register_craftitem("boomstick:9mm", {
     stack_max = 50,
     wield_scale = {x = 0.25, y = 0.25, z = 0.25},
     on_secondary_use = boomstick_api.weapon_load_function,
-    range = 1
+    range = 1,
+    groups = {boomstick_ammo = 1}
 })
 
 -- 5.56 Ammo
@@ -118,7 +117,8 @@ minetest.register_craftitem("boomstick:556", {
     wield_scale = {x = 0.25, y = 0.25, z = 0.25},
     stack_max = 30,
     on_secondary_use = boomstick_api.weapon_load_function,
-    range = 1
+    range = 1,
+    groups = {boomstick_ammo = 1}
 })
 
 -- 7.62x39 Ammo
@@ -129,5 +129,6 @@ minetest.register_craftitem("boomstick:762x39", {
     wield_scale = {x = 0.25, y = 0.25, z = 0.25},
     stack_max = 30,
     on_secondary_use = boomstick_api.weapon_load_function,
-    range = 1
+    range = 1,
+    groups = {boomstick_ammo = 1}
 })

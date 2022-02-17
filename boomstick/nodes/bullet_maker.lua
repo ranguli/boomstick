@@ -101,7 +101,16 @@ function after_place_node(pos, placer)
 	meta:set_string("infotext", "Work Bench")
 end
 
-minetest.register_node("boomstick:bulletmaker", {
+minetest.register_craft({
+    output = "boomstick:bullet_maker",
+    recipe = {
+        {"group:wood", "group:wood", "group:wood"},
+        {"technic:wrought_iron_ingot", "", "technic:wrought_iron_ingot"},
+        {"technic:wrought_iron_ingot", "", "technic:wrought_iron_ingot"}
+    }
+})
+
+minetest.register_node("boomstick:bullet_maker", {
 	description = S("@1 Maker", S("Bullet")),
 	groups = {cracky=2, choppy=2, oddly_breakable_by_hand=1},
     tiles = {
