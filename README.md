@@ -88,19 +88,3 @@ Any piece of media not listed here is either original work that is licensed unde
 | [boomstick_revolver_cock_1.oog](https://soundbible.com/1988-Gun-Cocking-Fast.html)                                             | <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/cc-zero.png" width="100px"/> [CC-0](https://creativecommons.org/publicdomain/zero/1.0/)    |
 | boomstick_ding.ogg<sup>[1](https://freesound.org/s/411089/)</sup> <sup>[2](https://freesound.org/s/127149/)</sup> | |
 | boomstick_musket_charge.png<sup>[1](https://github.com/minetest/minetest_game/blob/master/mods/default/textures/default_paper.png)</sup> <sup>[2](https://opengameart.org/content/cannonball)</sup> <sup>[3](https://github.com/minetest/minetest_game/blob/master/mods/dye/textures/dye_dark_grey.png)</sup> | |
-
-
-## To-Do:
-- [ ] Add crafting recipes
-  - [x] Add a long barrel crafting item + recipe
-  - [x] Add a body crafting item + recipe
-  - [x] Ammo recipes
-  - [ ] Add target block recipe
-  - [ ] Antigun block recipe
-- [ ] Add knock-back when hit
-- [ ] Smoke particles
-- [ ] Doors and glass should break when fired at with certain weapons
-- [ ] Emit a temporary light source upon firing (muzzle flash)
-- [ ] Add settingtypes.txt for server owners
-- [ ] Add weapon privilidges for server owners
-- [ ] Add more weapons (revolver, rifle, etc)
