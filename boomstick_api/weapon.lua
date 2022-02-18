@@ -269,11 +269,68 @@ function boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
     local projectiles = weapon_data.projectiles
 
     boomstick_api.launch_projectiles(user, weapon_data, pointed_thing, projectiles)
+    boomstick_api.spawn_smoke_particles(user, nil)
     boomstick_api.recoil(user, weapon_data.recoil)
     boomstick_api.knockback(user, weapon_data.recoil)
 
     minetest.sound_play(sound_spec, sound_table, false)
     weapon_data.rounds_loaded = weapon_data.rounds_loaded - 1
+end
+
+
+--- Generates smoke particles that look like smoke from a fired weapon
+-- **Note:** It is usually not necesary to call this function directly unless
+-- you are extending the mod or making custom behavior.
+-- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref) that the smoke particles will be created near. This would usually be the player firing the weapon.
+-- @param particle_table - A table containing attributes of the particles.
+-- @usage
+-- boomstick_api.spawn_smoke_particles(player, {
+--     -- The number of smoke particles to spawn
+--     count = 5,
+--
+--     -- The maximum possible size of each particle
+--     size = 2,
+--
+--     -- The maximum possible variance in position, velocity, and acceleration
+--     between particles.
+--     variance = 0.25,
+--
+--     -- How long each particle will linger before despawning
+--     lifespan = 2,
+--
+--     -- The maximum possible velocity of a particle
+--     velocity = 2
+-- })
+function boomstick_api.spawn_smoke_particles(player, particles)
+    if player == nil or not minetest.is_player(player) then
+        minetest.log("error",
+            "Argument \"player\" to boomstick_api.spawn_smoke_particles() must be non-nil and valid player object.")
+        return
+    end
+
+    if particles == nil then
+        particles = {count = 5, size = 2, variance = 0.25, lifespan = 2, velocity = 2}
+    end
+
+    local player_pos = player:get_pos()
+    local player_offset_pos = vector.add(player_pos,
+        boomstick_api.data.player_height_offset)
+
+    local look_dir = player:get_look_dir()
+
+    minetest.add_particlespawner({
+        amount = particles.count,
+        time = particles.lifespan,
+        minpos = vector.subtract(player_offset_pos, particles.variance),
+        maxpos = vector.add(player_offset_pos, particles.variance),
+        minvel = vector.multiply(look_dir, 1),
+        maxvel = vector.multiply(look_dir, particles.velocity),
+        minacc = vector.multiply(look_dir, particles.variance),
+        maxacc = vector.multiply(look_dir, particles.variance),
+        minsize = 1,
+        maxsize = particles.size,
+        texture = "boomstick_smoke.png"
+    })
 end
 
 
@@ -495,3 +552,4 @@ boomstick_api.create_new_category("weapon", nil, {
     recoil = 2,
     wield_scale = {x = 1.5, y = 1.5, z = 1}
 })
+
