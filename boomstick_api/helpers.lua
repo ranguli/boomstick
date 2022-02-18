@@ -1,7 +1,6 @@
 --- Assorted helper functions
 --
 --
-
 --- Add the values from table1 to table2, if they don't already exist.
 -- @param table1 - Table containing items
 -- @param table2 - Table containing items
@@ -72,6 +71,7 @@ function boomstick_api.debug(string, table)
     end
 end
 
+
 --- Returns true if a mod exists
 -- @tparam string modname - The name of a mod.
 -- @return boolean - Whether or not a mod exists.
@@ -81,3 +81,5 @@ function boomstick_api.mod_exists(modname)
     end
     return false
 end
+
+
