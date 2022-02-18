@@ -172,13 +172,17 @@ function boomstick_api.create_new_weapon(new_weapon_data)
 end
 
 
-function boomstick_api.create_new_category(name, base, category)
-    -- Inherit any default values from a base, if one is provided.
-    if base ~= nil then
+function boomstick_api.create_new_category(name, category, base)
+    -- Inherit any default values from a base, if one is provided. (Ensure both are tables)
+    if base ~= nil and type(base) == "table" and type(category) == "table" then
         category =
             boomstick_api.table_merge(boomstick_api.data.categories[base], category)
+    elseif base ~= nil and type(base) == "table" and type(category) == "string" then
+        -- Because category could be before our table let's reverse the calls so we get the right thing
+        category =
+            boomstick_api.table_merge(boomstick_api.data.categories[category], base)
     end
-
+    --minetest.log("action", minetest.serialize(category)) -- Used to verify the tables were being merged
     boomstick_api.data.categories[name] = category
 end
 
@@ -539,7 +543,7 @@ function boomstick_api.knockback(player, recoil)
 end
 
 
-boomstick_api.create_new_category("weapon", nil, {
+boomstick_api.create_new_category("weapon", {
     rounds_loaded = 0,
     accuracy = 75,
     cycle_cooldown = 0.25,
