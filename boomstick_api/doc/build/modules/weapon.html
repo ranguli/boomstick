@@ -98,6 +98,12 @@
 	<td class="summary">Fires a weapon as if it is loaded.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.spawn_smoke_particles">boomstick_api.spawn_smoke_particles (player, particle_table)</a></td>
+	<td class="summary">Generates smoke particles that look like smoke from a fired weapon
+ <strong>Note:</strong> It is usually not necesary to call this function directly unless
+ you are extending the mod or making custom behavior.</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#boomstick_api.fire_empty_weapon">boomstick_api.fire_empty_weapon (weapon_data, user)</a></td>
 	<td class="summary">Fires a weapon as if it is empty.</td>
 	</tr>
@@ -372,6 +378,60 @@
 
 
 
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.spawn_smoke_particles"></a>
+    <strong>boomstick_api.spawn_smoke_particles (player, particle_table)</strong>
+    </dt>
+    <dd>
+    Generates smoke particles that look like smoke from a fired weapon
+ <strong>Note:</strong> It is usually not necesary to call this function directly unless
+ you are extending the mod or making custom behavior.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">player</span>
+
+<ul>
+    <li>A player <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a> that the smoke particles will be created near. This would usually be the player firing the weapon.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">particle_table</span>
+
+<ul>
+    <li>A table containing attributes of the particles.</li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">boomstick_api.spawn_smoke_particles(player, {
+    <span class="comment">-- The number of smoke particles to spawn
+</span>    count = <span class="number">5</span>,
+
+    <span class="comment">-- The maximum possible size of each particle
+</span>    size = <span class="number">2</span>,
+
+    <span class="comment">-- The maximum possible variance in position, velocity, and acceleration
+</span>    between particles.
+    variance = <span class="number">0.25</span>,
+
+    <span class="comment">-- How long each particle will linger before despawning
+</span>    lifespan = <span class="number">2</span>,
+
+    <span class="comment">-- The maximum possible velocity of a particle
+</span>    velocity = <span class="number">2</span>
+
+})</pre>
+    </ul>
 
 </dd>
     <dt>
