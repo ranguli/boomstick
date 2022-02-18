@@ -472,6 +472,7 @@ function launch_single_projectile(player, weapon_data)
     entity:set_acceleration(acceleration)
 end
 
+
 --- Pushes the player's view up, simulating recoil.
 --
 -- **Note:** It is usually not necesary to call this function directly unless

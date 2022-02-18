@@ -166,6 +166,7 @@ function boomstick_api.Projectile:collision_is_suicide(collision)
     return false
 end
 
+
 --- Given a player look direction and a velocity value, create a
 -- vector that sends the projectile off in the direction the player is
 -- pointing.
@@ -177,6 +178,7 @@ function boomstick_api.Projectile:get_velocity(player)
     local player_look_direction = player:get_look_dir()
     return vector.multiply(player_look_direction, self._velocity)
 end
+
 
 --- Given a player position and an accuracy value, create a randomized
 -- vector for the projectiles acceleration
@@ -190,6 +192,7 @@ function boomstick_api.Projectile:get_acceleration(player, accuracy)
     return vector.new(math.random(-accuracy, accuracy), math.random(-accuracy, accuracy),
         math.random(-accuracy, accuracy))
 end
+
 
 --- Given a player position and an accuracy value, create a randomized
 -- position that the projectile should be spawned in at.
@@ -210,8 +213,6 @@ function boomstick_api.Projectile:get_position(player, accuracy)
 
     return vector.add(player_offset_pos, randomization_vector)
 end
-
-
 
 
 function boomstick_api.Projectile:on_step(dtime, moveresult)
@@ -238,4 +239,5 @@ function boomstick_api.Projectile:on_step(dtime, moveresult)
 
     end
 end
+
 
