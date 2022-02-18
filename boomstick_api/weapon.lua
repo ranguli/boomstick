@@ -182,7 +182,7 @@ function boomstick_api.create_new_category(name, category, base)
         category =
             boomstick_api.table_merge(boomstick_api.data.categories[category], base)
     end
-    --minetest.log("action", minetest.serialize(category)) -- Used to verify the tables were being merged
+    -- minetest.log("action", minetest.serialize(category)) -- Used to verify the tables were being merged
     boomstick_api.data.categories[name] = category
 end
 
@@ -438,7 +438,9 @@ function boomstick_api.can_load_weapon(inventory_item, ammo_item)
 end
 
 
-function boomstick_api.launch_projectiles(player, weapon_data, pointed_thing, projectile_count)
+function boomstick_api.launch_projectiles(
+    player, weapon_data, pointed_thing, projectile_count
+)
 
     for i, callback in pairs(boomstick_api.data.callbacks) do
         if callback.callback_type == "projectile_collision" then
@@ -447,11 +449,12 @@ function boomstick_api.launch_projectiles(player, weapon_data, pointed_thing, pr
     end
 
     for i = 1, projectile_count do
-        launch_single_projectile(player, weapon_data, entity_name)
+        launch_single_projectile(player, weapon_data)
     end
 end
 
-function launch_single_projectile(player, weapon_data, entity_name)
+
+function launch_single_projectile(player, weapon_data)
 
     local projectile = weapon_data.projectile_data
     local vel = projectile._velocity
@@ -465,13 +468,8 @@ function launch_single_projectile(player, weapon_data, entity_name)
 
     player_position.y = player_position.y + 1.5
 
-    local spawn_position = {
-        x = player_position.x + (math.random(-accuracy, accuracy) / 100),
-        y = player_position.y + (math.random(-accuracy, accuracy) / 100),
-        z = player_position.z + (math.random(-accuracy, accuracy) / 100)
-    }
-
-    local pellet = minetest.add_entity(spawn_position, entity_name)
+    local position = get_projectile_position(player, accuracy)
+    local pellet = minetest.add_entity(position, entity_name)
 
     local yaw = player:get_look_horizontal()
     local vertical = player:get_look_vertical()
@@ -500,6 +498,24 @@ function launch_single_projectile(player, weapon_data, entity_name)
     pellet:set_acceleration(pellet_acceleration)
 end
 
+
+function get_projectile_position(player, accuracy)
+    -- Given a player position and an accuracy value, create a randomized
+    -- position that the projectile should be spawned in at.
+    assert(player and minetest.is_player(player), "Must provide a valid player object")
+
+    local player_pos = player:get_pos()
+    local player_offset_pos = vector.add(player_pos,
+        boomstick_api.data.player_height_offset)
+
+    local randomization_vector = {
+        x = (math.random(-accuracy, accuracy) / 100),
+        y = (math.random(-accuracy, accuracy) / 100),
+        z = (math.random(-accuracy, accuracy) / 100)
+    }
+
+    return vector.add(player_offset_pos, randomization_vector)
+end
 
 
 --- Pushes the player's view up, simulating recoil.
