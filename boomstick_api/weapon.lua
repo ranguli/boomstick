@@ -182,7 +182,7 @@ function boomstick_api.create_new_category(name, category, base)
         category =
             boomstick_api.table_merge(boomstick_api.data.categories[category], base)
     end
-    --minetest.log("action", minetest.serialize(category)) -- Used to verify the tables were being merged
+    -- minetest.log("action", minetest.serialize(category)) -- Used to verify the tables were being merged
     boomstick_api.data.categories[name] = category
 end
 
@@ -438,65 +438,38 @@ function boomstick_api.can_load_weapon(inventory_item, ammo_item)
 end
 
 
-function boomstick_api.launch_projectiles(player,
-    weapon_data,
-    pointed_thing,
-    projectiles)
-
-    local projectile = weapon_data.projectile_data
-    local vel = projectile._velocity
-
-    projectile:set_owner(player)
+function boomstick_api.launch_projectiles(
+    player, weapon_data, pointed_thing, projectile_count
+)
 
     for i, callback in pairs(boomstick_api.data.callbacks) do
         if callback.callback_type == "projectile_collision" then
-            projectile:register_on_collision(callback.callback_func)
+            weapon_data.projectile_data:register_on_collision(callback.callback_func)
         end
     end
 
-    local entity_name = projectile._entity_name
-
-    for i = 1, projectiles do
-        -- TODO: This whole loop needs to be broken down into functions
-        local accuracy = (100 - weapon_data.accuracy)
-
-        local player_position = player:get_pos()
-        player_position.y = player_position.y + 1.5
-
-        local spawn_position = {
-            x = player_position.x + (math.random(-accuracy, accuracy) / 100),
-            y = player_position.y + (math.random(-accuracy, accuracy) / 100),
-            z = player_position.z + (math.random(-accuracy, accuracy) / 100)
-        }
-
-        local pellet = minetest.add_entity(spawn_position, entity_name)
-
-        local yaw = player:get_look_horizontal()
-        local vertical = player:get_look_vertical()
-        local player_look_direction = player:get_look_dir()
-
-        local pellet_velocity = {
-            x = player_look_direction.x * vel,
-            y = player_look_direction.y * vel,
-            z = player_look_direction.z * vel
-        }
-
-        pellet:set_velocity(pellet_velocity)
-
-        local pellet_rotation = {x = 0, y = yaw + math.pi, z = -vertical}
-
-        pellet:set_rotation(pellet_rotation)
-
-        local acc = ((100 - weapon_data.accuracy) / 10)
-
-        local pellet_acceleration = {
-            x = math.random(-acc, acc),
-            y = math.random(-acc, acc),
-            z = math.random(-acc, acc)
-        }
-
-        pellet:set_acceleration(pellet_acceleration)
+    for i = 1, projectile_count do
+        launch_single_projectile(player, weapon_data)
     end
+end
+
+
+function launch_single_projectile(player, weapon_data)
+    local projectile = weapon_data.projectile_data
+
+    projectile:set_owner(player)
+
+    local accuracy = (100 - weapon_data.accuracy)
+    local position = projectile:get_position(player, accuracy)
+
+    local entity_name = projectile._entity_name
+    local entity = minetest.add_entity(position, entity_name)
+
+    local velocity = projectile:get_velocity(player)
+    entity:set_velocity(velocity)
+
+    local acceleration = projectile:get_acceleration(player, accuracy)
+    entity:set_acceleration(acceleration)
 end
 
 

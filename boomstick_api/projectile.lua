@@ -167,6 +167,54 @@ function boomstick_api.Projectile:collision_is_suicide(collision)
 end
 
 
+--- Given a player look direction and a velocity value, create a
+-- vector that sends the projectile off in the direction the player is
+-- pointing.
+-- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who fired the weapon.
+function boomstick_api.Projectile:get_velocity(player)
+    assert(player and minetest.is_player(player), "Must provide a valid player object")
+    assert(self._velocity)
+
+    local player_look_direction = player:get_look_dir()
+    return vector.multiply(player_look_direction, self._velocity)
+end
+
+
+--- Given a player position and an accuracy value, create a randomized
+-- vector for the projectiles acceleration
+-- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who fired the weapon.
+-- @param accuracy - An accuracy value that will determine randomized acceleration spread
+function boomstick_api.Projectile:get_acceleration(player, accuracy)
+    assert(player and minetest.is_player(player), "Must provide a valid player object")
+
+    accuracy = accuracy / 10
+
+    return vector.new(math.random(-accuracy, accuracy), math.random(-accuracy, accuracy),
+        math.random(-accuracy, accuracy))
+end
+
+
+--- Given a player position and an accuracy value, create a randomized
+-- position that the projectile should be spawned in at.
+-- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who fired the weapon.
+-- @param accuracy - An accuracy value that will determine randomized acceleration spread
+function boomstick_api.Projectile:get_position(player, accuracy)
+    assert(player and minetest.is_player(player), "Must provide a valid player object")
+
+    local player_pos = player:get_pos()
+    local player_offset_pos = vector.add(player_pos,
+        boomstick_api.data.player_height_offset)
+
+    local randomization_vector = {
+        x = (math.random(-accuracy, accuracy) / 100),
+        y = (math.random(-accuracy, accuracy) / 100),
+        z = (math.random(-accuracy, accuracy) / 100)
+    }
+
+    return vector.add(player_offset_pos, randomization_vector)
+end
+
+
 function boomstick_api.Projectile:on_step(dtime, moveresult)
     self._timer = self._timer + dtime
 
