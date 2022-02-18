@@ -132,6 +132,10 @@ function boomstick_api.Projectile:do_damage(collision)
         return
     end
 
+    if self._owner == nil or not minetest.is_player(self._owner) then
+        return
+    end
+
     if not self:collision_is_projectile(collision) then
         local tool_capabilities = {
             full_punch_interval = 1.0,
