@@ -455,65 +455,22 @@ end
 
 
 function launch_single_projectile(player, weapon_data)
-
     local projectile = weapon_data.projectile_data
-    local vel = projectile._velocity
-    local entity_name = projectile._entity_name
 
     projectile:set_owner(player)
 
     local accuracy = (100 - weapon_data.accuracy)
+    local position = projectile:get_position(player, accuracy)
 
-    local position = get_projectile_position(player, accuracy)
-    local pellet = minetest.add_entity(position, entity_name)
+    local entity_name = projectile._entity_name
+    local entity = minetest.add_entity(position, entity_name)
 
-    local velocity = get_projectile_velocity(player, projectile)
-    pellet:set_velocity(velocity)
+    local velocity = projectile:get_velocity(player)
+    entity:set_velocity(velocity)
 
-    local acceleration = get_projectile_acceleration(player, accuracy)
-    pellet:set_acceleration(acceleration)
+    local acceleration = projectile:get_acceleration(player, accuracy)
+    entity:set_acceleration(acceleration)
 end
-
-function get_projectile_velocity(player, projectile)
-    -- Given a player look direction and a velocity value, create a
-    -- vector that sends the projectile off in the direction the player is
-    -- pointing.
-    assert(player and minetest.is_player(player), "Must provide a valid player object")
-    assert(projectile and projectile._velocity)
-
-    local player_look_direction = player:get_look_dir()
-    return vector.multiply(player_look_direction, projectile._velocity)
-end
-
-function get_projectile_acceleration(player, accuracy)
-    -- Given a player position and an accuracy value, create a randomized
-    -- vector for the projectiles acceleration
-    assert(player and minetest.is_player(player), "Must provide a valid player object")
-
-    accuracy = accuracy / 10
-
-    return vector.new(math.random(-accuracy, accuracy), math.random(-accuracy, accuracy),
-        math.random(-accuracy, accuracy))
-end
-
-function get_projectile_position(player, accuracy)
-    -- Given a player position and an accuracy value, create a randomized
-    -- position that the projectile should be spawned in at.
-    assert(player and minetest.is_player(player), "Must provide a valid player object")
-
-    local player_pos = player:get_pos()
-    local player_offset_pos = vector.add(player_pos,
-        boomstick_api.data.player_height_offset)
-
-    local randomization_vector = {
-        x = (math.random(-accuracy, accuracy) / 100),
-        y = (math.random(-accuracy, accuracy) / 100),
-        z = (math.random(-accuracy, accuracy) / 100)
-    }
-
-    return vector.add(player_offset_pos, randomization_vector)
-end
-
 
 --- Pushes the player's view up, simulating recoil.
 --
