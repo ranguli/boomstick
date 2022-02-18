@@ -464,21 +464,11 @@ function launch_single_projectile(player, weapon_data)
 
     local accuracy = (100 - weapon_data.accuracy)
 
-    local player_position = player:get_pos()
-
-    player_position.y = player_position.y + 1.5
-
     local position = get_projectile_position(player, accuracy)
     local pellet = minetest.add_entity(position, entity_name)
 
-    local yaw = player:get_look_horizontal()
-    local vertical = player:get_look_vertical()
-
     local velocity = get_projectile_velocity(player, projectile)
     pellet:set_velocity(velocity)
-
-    local pellet_rotation = {x = 0, y = yaw + math.pi, z = -vertical}
-    pellet:set_rotation(pellet_rotation)
 
     local acceleration = get_projectile_acceleration(player, accuracy)
     pellet:set_acceleration(acceleration)
