@@ -487,15 +487,20 @@ function launch_single_projectile(player, weapon_data)
 
     pellet:set_rotation(pellet_rotation)
 
-    local acc = ((100 - weapon_data.accuracy) / 10)
+    local acceleration = get_projectile_acceleration(player, accuracy)
+    pellet:set_acceleration(acceleration)
+end
 
-    local pellet_acceleration = {
-        x = math.random(-acc, acc),
-        y = math.random(-acc, acc),
-        z = math.random(-acc, acc)
-    }
 
-    pellet:set_acceleration(pellet_acceleration)
+function get_projectile_acceleration(player, accuracy)
+    -- Given a player position and an accuracy value, create a randomized
+    -- position that the projectile should be spawned in at.
+    assert(player and minetest.is_player(player), "Must provide a valid player object")
+
+    accuracy = accuracy / 10
+
+    return vector.new(math.random(-accuracy, accuracy), math.random(-accuracy, accuracy),
+        math.random(-accuracy, accuracy))
 end
 
 
