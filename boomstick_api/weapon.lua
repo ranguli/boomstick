@@ -473,28 +473,31 @@ function launch_single_projectile(player, weapon_data)
 
     local yaw = player:get_look_horizontal()
     local vertical = player:get_look_vertical()
-    local player_look_direction = player:get_look_dir()
 
-    local pellet_velocity = {
-        x = player_look_direction.x * vel,
-        y = player_look_direction.y * vel,
-        z = player_look_direction.z * vel
-    }
-
-    pellet:set_velocity(pellet_velocity)
+    local velocity = get_projectile_velocity(player, projectile)
+    pellet:set_velocity(velocity)
 
     local pellet_rotation = {x = 0, y = yaw + math.pi, z = -vertical}
-
     pellet:set_rotation(pellet_rotation)
 
     local acceleration = get_projectile_acceleration(player, accuracy)
     pellet:set_acceleration(acceleration)
 end
 
+function get_projectile_velocity(player, projectile)
+    -- Given a player look direction and a velocity value, create a
+    -- vector that sends the projectile off in the direction the player is
+    -- pointing.
+    assert(player and minetest.is_player(player), "Must provide a valid player object")
+    assert(projectile and projectile._velocity)
+
+    local player_look_direction = player:get_look_dir()
+    return vector.multiply(player_look_direction, projectile._velocity)
+end
 
 function get_projectile_acceleration(player, accuracy)
     -- Given a player position and an accuracy value, create a randomized
-    -- position that the projectile should be spawned in at.
+    -- vector for the projectiles acceleration
     assert(player and minetest.is_player(player), "Must provide a valid player object")
 
     accuracy = accuracy / 10
@@ -502,7 +505,6 @@ function get_projectile_acceleration(player, accuracy)
     return vector.new(math.random(-accuracy, accuracy), math.random(-accuracy, accuracy),
         math.random(-accuracy, accuracy))
 end
-
 
 function get_projectile_position(player, accuracy)
     -- Given a player position and an accuracy value, create a randomized
