@@ -193,26 +193,29 @@ function boomstick_api.cycle_weapon(itemstack, user)
     -- eject, otherwise an empty shell should eject
 
     local item_def = itemstack:get_definition()
-    local weapon_data = item_def.boomstick_weapon_data
 
     if boomstick_api.weapon_is_cocked(item_def) then
         return
     end
 
-    local player_position = user:get_pos()
-
-    local sounds = weapon_data.cycle_weapon_sounds
-    local sound_spec = boomstick_api.get_random_sound(sounds)
-    local sound_table = {pos = player_position, gain = 1.5, max_hear_distance = 5}
-
-    minetest.sound_play(sound_spec, sound_table, false)
-    -- weapon_data.cocked = true
+    local weapon_data = item_def.boomstick_weapon_data
+    boomstick_api.play_cycle_weapon_sound(weapon_data, player)
 
     minetest.after(weapon_data.cycle_cooldown, function()
         weapon_data.cocked = true
     end
 )
 
+end
+
+function boomstick_api.play_cycle_weapon_sound(weapon_data, player)
+    local player_position = player:get_pos()
+
+    local sounds = weapon_data.cycle_weapon_sounds
+    local sound_spec = boomstick_api.get_random_sound(sounds)
+    local sound_table = {pos = player_position, gain = 1.5, max_hear_distance = 5}
+
+    minetest.sound_play(sound_spec, sound_table, false)
 end
 
 
