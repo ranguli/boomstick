@@ -36,7 +36,7 @@
 -- @classmod boomstick.Projectile
 boomstick_api.Projectile = {
     _velocity = 500,
-    _lifetime = 2.5,
+    _lifetime = 15,
     _damage = 4,
     _on_collision_functions = {}
 }
@@ -163,7 +163,7 @@ function boomstick_api.Projectile:collision_is_suicide(collision)
 end
 
 
---- Given a player look direction and a velocity value, create a
+--- Given a player and a velocity value, create a
 -- vector that sends the projectile off in the direction the player is
 -- pointing.
 -- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who fired the weapon.
@@ -176,7 +176,7 @@ function boomstick_api.Projectile:get_velocity(player)
 end
 
 
---- Given a player position and an accuracy value, create a randomized
+--- Given a player and an accuracy value, create a randomized
 -- vector for the projectiles acceleration
 -- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who fired the weapon.
 -- @param accuracy - An accuracy value that will determine randomized acceleration spread
@@ -190,7 +190,7 @@ function boomstick_api.Projectile:get_acceleration(player, accuracy)
 end
 
 
---- Given a player position and an accuracy value, create a randomized
+--- Given a player and an accuracy value, create a randomized
 -- position that the projectile should be spawned in at.
 -- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who fired the weapon.
 -- @param accuracy - An accuracy value that will determine randomized acceleration spread
@@ -210,6 +210,18 @@ function boomstick_api.Projectile:get_position(player, accuracy)
     return vector.add(player_offset_pos, randomization_vector)
 end
 
+--- Given a player position, set the rotation of a projectile
+-- so the projectile model is facing the direction the playing is looking.
+-- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who fired the weapon.
+
+function boomstick_api.Projectile:get_rotation(player)
+    assert(player and minetest.is_player(player), "Must provide a valid player object")
+
+    local yaw = player:get_look_horizontal()
+    local pitch = player:get_look_vertical()
+
+    return vector.new(-pitch, yaw, 0)
+end
 
 function boomstick_api.Projectile:on_step(dtime, moveresult)
     self._timer = self._timer + dtime

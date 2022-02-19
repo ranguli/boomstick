@@ -59,15 +59,15 @@ function boomstick_api.get_random_sound(table)
     return boomstick_api.get_random_entry(table)
 end
 
-
---- Wrapper for `minetest.debug()` that will check if a debug flag is set in the mod settings before logging.
--- This is a work in progress.
--- @param string - A string to log to the Minetest console for debugging purposes.
--- @param table - A table containing printf-style arguments to be passed to `string.format()`
+--- Wrapper for `minetest.log()` with some added conveniences.
+-- @param string - A string to log to the Minetest console for debugging purposes, which will be the first argument to `string.format()`
+-- @param table - A table containing printf-style arguments to be passed as the second argument to `string.format()`
 -- @return table - A [SimpleSoundSpec](https://minetest.gitlab.io/minetest/sounds/#simplesoundspec) with the name set to a random sound.
 function boomstick_api.debug(string, table)
-    if minetest.settings:get_bool("boomstick_debug") then
-        minetest.log(string.format(string, unpack(table)))
+    if table == nil then
+        minetest.log("verbose", "[Boomstick] " .. string)
+    else
+        minetest.log("verbose", "[Boomstick] " .. string.format(string, unpack(table)))
     end
 end
 
@@ -112,7 +112,10 @@ end
 --
 -- boomstick_api.play_random_sound(empty_weapon_sounds, pos)
 function boomstick_api.play_random_sound(sounds, pos)
-    assert(#sounds >= 1)
+    if sounds == nil then
+        boomstick_api.debug("No sounds provided")
+        return
+    end
 
     local sound = boomstick_api.get_random_sound(sounds)
     boomstick_api.play_sound(sound, pos)
@@ -148,8 +151,13 @@ end
 -- },
 -- pos)
 function boomstick_api.play_sound(sound, pos)
-    assert(sound ~= nil and sound.name,
-        "sound must be non-nil and contain a name parameter")
+    if sound == nil then
+        minetest.log("error", "Argument #1 to boomstick_api.play_sound() must not be nil.")
+        return nil
+    elseif not sound.name then
+        minetest.log("error", "Argument #1 to boomstick_api.play_sound() must not contain a 'name' field.")
+        return nil
+    end
 
     local gain = sound.gain or 1.0
     local max_hear_distance = sound.max_hear_distance or 5
@@ -158,5 +166,4 @@ function boomstick_api.play_sound(sound, pos)
     local sound_table = {pos = pos, max_hear_distance = max_hear_distance}
     minetest.sound_play(sound_spec, sound_table, false)
 end
-
 

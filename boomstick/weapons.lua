@@ -5,6 +5,16 @@ boomstick_api.create_new_category("shotgun", "weapon", {
     recoil = 3
 })
 
+boomstick_api.create_new_category("semi_rifle", "weapon", {
+    projectiles = 1,
+    recoil = 2,
+    capacity = 10,
+    accuracy = 100,
+    action = "semi",
+    ammo_type = "boomstick:buckshot",
+    projectile_data = MediumBulletProjectile
+})
+
 -- pump shotgun weapon category
 boomstick_api.create_new_category("pump_shotgun", "shotgun", {
     cycle_weapon_sounds = {{name = "boomstick_shotgun_rack"}},
@@ -50,6 +60,23 @@ boomstick_api.create_new_weapon({
     wield_scale = {x = 2, y = 2, z = 1},
     projectile_data = PelletProjectile
 })
+
+boomstick_api.create_new_weapon({
+    name = "SKS",
+    description = "bang",
+    category = "semi_rifle",
+    item_name = "SKS",
+    capacity = 10,
+    entity_name = "boomstick:sks",
+    textures = {
+        icon = "boomstick_missing_texture.png",
+        default = "boomstick_missing_texture.png",
+        reload = "boomstick_missing_texture.png"
+    },
+    wield_scale = {x = 2, y = 2, z = 1},
+    --projectile_data = MediumBuletProjectile
+})
+
 
 boomstick_api.create_new_weapon({
     name = "Musket",

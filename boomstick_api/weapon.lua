@@ -440,6 +440,9 @@ function launch_single_projectile(player, weapon_data)
 
     local acceleration = projectile:get_acceleration(player, accuracy)
     entity:set_acceleration(acceleration)
+
+    local rotation = projectile:get_rotation(player)
+    entity:set_rotation(rotation)
 end
 
 
@@ -489,9 +492,9 @@ end
 boomstick_api.create_new_category("weapon", {
     rounds_loaded = 0,
     accuracy = 75,
-    cycle_cooldown = 0.25,
+    cycle_cooldown = 0.25, -- Applicable for manual and semi-automatic weapons
     reload_delay = 0.75,
-    durability = 1000, -- Currently used
+    durability = 1000,
     action = "manual", -- Currently unused
     cocked = true,
     ammo_ready = true,
