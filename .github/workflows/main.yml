@@ -8,7 +8,79 @@ on:
     branches:
       - '**'
 jobs:
-  docs:
+  format-boomstick:
+    name: Code formatting on boomstick
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+
+    - uses: leafo/gh-actions-lua@v8.0.0
+      with:
+        luaVersion: "5.1.5"
+
+    - uses: leafo/gh-actions-luarocks@v4.0.0
+
+    - name: Install dependencies
+      run: luarocks install --server=https://luarocks.org/dev luaformatter
+
+    - name: Check code formatting
+      run: cd boomstick && lua-format -i *.lua
+  format-boomstick-api:
+    name: Code formatting on API
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+
+    - uses: leafo/gh-actions-lua@v8.0.0
+      with:
+        luaVersion: "5.1.5"
+
+    - uses: leafo/gh-actions-luarocks@v4.0.0
+
+    - name: Install dependencies
+      run: luarocks install --server=https://luarocks.org/dev luaformatter
+
+    - name: Check code formatting
+      run: cd boomstick_api && lua-format -i *.lua
+  lint-boomstick:
+    name: Code linting on boomstick
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+
+    - uses: leafo/gh-actions-lua@v8.0.0
+      with:
+        luaVersion: "5.1.5"
+
+    - uses: leafo/gh-actions-luarocks@v4.0.0
+
+    - name: Install dependencies
+      run: luarocks install luacheck
+
+    - name: Run code linter
+      run: cd boomstick && luacheck .
+  lint-boomstick-api:
+    name: Code linting on API
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+
+    - uses: leafo/gh-actions-lua@v8.0.0
+      with:
+        luaVersion: "5.1.5"
+
+    - uses: leafo/gh-actions-luarocks@v4.0.0
+
+    - name: Install dependencies
+      run: luarocks install luacheck
+
+    - name: Run code linter
+      run: cd boomstick_api && luacheck .
+  deploy-docs:
     name: Deploy documentation to GitHub Pages
     runs-on: ubuntu-latest
     steps:
