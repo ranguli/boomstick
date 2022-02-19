@@ -9,7 +9,7 @@
 --     _velocity = 50,
 --
 --     -- How long until our projectile should despawn (optional)
---     _velocity = 50,
+--     _lifetime = 2.5,
 --
 --     -- How much damage each projectile will do
 --     _damage = 6,
@@ -147,11 +147,7 @@ end
 
 
 function boomstick_api.Projectile:collision_is_suicide(collision)
-    if not collision then
-        return
-    end
-
-    if collision.type ~= "object" then
+    if not collision or collision.type ~= "object" then
         return
     end
 

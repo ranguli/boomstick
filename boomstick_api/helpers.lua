@@ -56,7 +56,7 @@ function boomstick_api.get_random_sound(table)
         return
     end
 
-    return {name = boomstick_api.get_random_entry(table)}
+    return boomstick_api.get_random_entry(table)
 end
 
 
@@ -80,6 +80,83 @@ function boomstick_api.mod_exists(modname)
         return true
     end
     return false
+end
+
+
+--- Randomly select a sound from a table of sounds, handling the creation of SimpleSoundSpecs, sound parameter tables, and getting player position.
+-- @param sounds - A list of tables, each containing a `name` value, with optional `gain`, and `max_hear_distance` values.
+-- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). The sound will originate at the players position.
+-- @usage
+-- local my_sounds = {
+--     {name = "my_sound_1"},
+--     {name = "my_sound_2", gain = 0.25, max_hear_distance = 5},
+-- }
+--
+-- boomstick_api.play_random_sound_on_player(my_sounds, player)
+function boomstick_api.play_random_sound_on_player(sounds, player)
+    assert(player and minetest.is_player(player), "Must provide a valid player object")
+    local pos = player:get_pos()
+
+    boomstick_api.play_random_sound(sounds, pos)
+end
+
+
+--- Randomly select a sound from a table of sounds, handling the creation of SimpleSoundSpec and sound parameter tables.
+-- @param sounds - A list of tables, each containing a `name` value, with optional `gain`, and `max_hear_distance` values.
+-- @param pos - A Minetest [vector](https://minetest.gitlab.io/minetest/representations-of-simple-things/#representations-of-simple-things) where the sound should originate from.
+-- @usage
+-- local my_sounds = {
+--     {name = "my_sound_1"},
+--     {name = "my_sound_2", gain = 0.25, max_hear_distance = 5},
+-- }
+--
+-- boomstick_api.play_random_sound(empty_weapon_sounds, pos)
+function boomstick_api.play_random_sound(sounds, pos)
+    assert(#sounds >= 1)
+
+    local sound = boomstick_api.get_random_sound(sounds)
+    boomstick_api.play_sound(sound, pos)
+end
+
+
+--- Wrapper for `minetest.sound_play()` that handles the creation of SimpleSoundSpec and sound parameter tables, and getting player position.
+-- @param sound - A table containing a `name` value, with optional `gain`, and `max_hear_distance` values.
+-- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). The sound will originate at the players position.
+-- @usage
+-- boomstick_api.play_sound({
+--     name = "mysound",
+--     gain = 1.0,
+--     max_hear_distance = 5
+-- },
+-- player)
+function boomstick_api.play_sound_on_player(sound, player)
+    assert(player and minetest.is_player(player), "Must provide a valid player object")
+    local pos = player:get_pos()
+
+    boomstick_api.play_sound(sound, pos)
+end
+
+
+--- Wrapper for `minetest.sound_play()` that handles the creation of SimpleSoundSpec and sound parameter tables.
+-- @param sound - A table containing a `name` value, with optional `gain`, and `max_hear_distance` values.
+-- @param pos - A Minetest [vector](https://minetest.gitlab.io/minetest/representations-of-simple-things/#representations-of-simple-things) where the sound should originate from.
+-- @usage
+-- boomstick_api.play_sound({
+--     name = "mysound",
+--     gain = 1.0,
+--     max_hear_distance = 5
+-- },
+-- pos)
+function boomstick_api.play_sound(sound, pos)
+    assert(sound ~= nil and sound.name,
+        "sound must be non-nil and contain a name parameter")
+
+    local gain = sound.gain or 1.0
+    local max_hear_distance = sound.max_hear_distance or 5
+
+    local sound_spec = {name = sound.name, gain = gain}
+    local sound_table = {pos = pos, max_hear_distance = max_hear_distance}
+    minetest.sound_play(sound_spec, sound_table, false)
 end
 
 
