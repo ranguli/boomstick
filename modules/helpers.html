@@ -57,17 +57,11 @@
 
 <h1>Module <code>helpers</code></h1>
 <p>Assorted helper functions</p>
-<p>
-
-</p>
+<p> Add the values from table1 to table2, if they don't already exist.</p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
-	<tr>
-	<td class="name" nowrap><a href="#boomstick_api.table_merge">boomstick_api.table_merge (table1, table2)</a></td>
-	<td class="summary">Add the values from table1 to table2, if they don't already exist.</td>
-	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#boomstick_api.validate_table">boomstick_api.validate_table (keys, data)</a></td>
 	<td class="summary">Given a table and a set of keys, validate that the keys in the table exist.</td>
@@ -88,6 +82,22 @@
 	<td class="name" nowrap><a href="#boomstick_api.mod_exists">boomstick_api.mod_exists (modname)</a></td>
 	<td class="summary">Returns true if a mod exists</td>
 	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.play_random_sound_on_player">boomstick_api.play_random_sound_on_player (sounds, player)</a></td>
+	<td class="summary">Randomly select a sound from a table of sounds, handling the creation of SimpleSoundSpecs, sound parameter tables, and getting player position.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.play_random_sound">boomstick_api.play_random_sound (sounds, pos)</a></td>
+	<td class="summary">Randomly select a sound from a table of sounds, handling the creation of SimpleSoundSpec and sound parameter tables.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.play_sound_on_player">boomstick_api.play_sound_on_player (sound, player)</a></td>
+	<td class="summary">Wrapper for <code>minetest.sound_play()</code> that handles the creation of SimpleSoundSpec and sound parameter tables, and getting player position.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.play_sound">boomstick_api.play_sound (sound, pos)</a></td>
+	<td class="summary">Wrapper for <code>minetest.sound_play()</code> that handles the creation of SimpleSoundSpec and sound parameter tables.</td>
+	</tr>
 </table>
 
 <br/>
@@ -97,42 +107,6 @@
     <h2 class="section-header "><a name="Functions"></a>Functions</h2>
 
     <dl class="function">
-    <dt>
-    <a name = "boomstick_api.table_merge"></a>
-    <strong>boomstick_api.table_merge (table1, table2)</strong>
-    </dt>
-    <dd>
-    Add the values from table1 to table2, if they don't already exist.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">table1</span>
-
-<ul>
-    <li>Table containing items</li>
-</ul>
-
-        </li>
-        <li><span class="parameter">table2</span>
-
-<ul>
-    <li>Table containing items</li>
-</ul>
-
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-        table - Returns table2 with the unique items from table1 inserted.
-    </ol>
-
-
-
-
-</dd>
     <dt>
     <a name = "boomstick_api.validate_table"></a>
     <strong>boomstick_api.validate_table (keys, data)</strong>
@@ -286,6 +260,166 @@
 
 
 
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.play_random_sound_on_player"></a>
+    <strong>boomstick_api.play_random_sound_on_player (sounds, player)</strong>
+    </dt>
+    <dd>
+    Randomly select a sound from a table of sounds, handling the creation of SimpleSoundSpecs, sound parameter tables, and getting player position.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">sounds</span>
+
+<ul>
+    <li>A list of tables, each containing a <code>name</code> value, with optional <code>gain</code>, and <code>max_hear_distance</code> values.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">player</span>
+
+<ul>
+    <li>A player <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a>. The sound will originate at the players position.</li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> my_sounds = {
+    {name = <span class="string">"my_sound_1"</span>},
+    {name = <span class="string">"my_sound_2"</span>, gain = <span class="number">0.25</span>, max_hear_distance = <span class="number">5</span>},
+}
+
+boomstick_api.play_random_sound_on_player(my_sounds, player)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.play_random_sound"></a>
+    <strong>boomstick_api.play_random_sound (sounds, pos)</strong>
+    </dt>
+    <dd>
+    Randomly select a sound from a table of sounds, handling the creation of SimpleSoundSpec and sound parameter tables.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">sounds</span>
+
+<ul>
+    <li>A list of tables, each containing a <code>name</code> value, with optional <code>gain</code>, and <code>max_hear_distance</code> values.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">pos</span>
+
+<ul>
+    <li>A Minetest <a href="https://minetest.gitlab.io/minetest/representations-of-simple-things/#representations-of-simple-things">vector</a> where the sound should originate from.</li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> my_sounds = {
+    {name = <span class="string">"my_sound_1"</span>},
+    {name = <span class="string">"my_sound_2"</span>, gain = <span class="number">0.25</span>, max_hear_distance = <span class="number">5</span>},
+}
+
+boomstick_api.play_random_sound(empty_weapon_sounds, pos)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.play_sound_on_player"></a>
+    <strong>boomstick_api.play_sound_on_player (sound, player)</strong>
+    </dt>
+    <dd>
+    Wrapper for <code>minetest.sound_play()</code> that handles the creation of SimpleSoundSpec and sound parameter tables, and getting player position.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">sound</span>
+
+<ul>
+    <li>A table containing a <code>name</code> value, with optional <code>gain</code>, and <code>max_hear_distance</code> values.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">player</span>
+
+<ul>
+    <li>A player <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a>. The sound will originate at the players position.</li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">boomstick_api.play_sound({
+    name = <span class="string">"mysound"</span>,
+    gain = <span class="number">1.0</span>,
+    max_hear_distance = <span class="number">5</span>
+},
+player)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.play_sound"></a>
+    <strong>boomstick_api.play_sound (sound, pos)</strong>
+    </dt>
+    <dd>
+    Wrapper for <code>minetest.sound_play()</code> that handles the creation of SimpleSoundSpec and sound parameter tables.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">sound</span>
+
+<ul>
+    <li>A table containing a <code>name</code> value, with optional <code>gain</code>, and <code>max_hear_distance</code> values.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">pos</span>
+
+<ul>
+    <li>A Minetest <a href="https://minetest.gitlab.io/minetest/representations-of-simple-things/#representations-of-simple-things">vector</a> where the sound should originate from.</li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">boomstick_api.play_sound({
+    name = <span class="string">"mysound"</span>,
+    gain = <span class="number">1.0</span>,
+    max_hear_distance = <span class="number">5</span>
+},
+pos)</pre>
+    </ul>
 
 </dd>
 </dl>

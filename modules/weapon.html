@@ -98,7 +98,7 @@
 	<td class="summary">Fires a weapon as if it is loaded.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#boomstick_api.spawn_smoke_particles">boomstick_api.spawn_smoke_particles (player, particle_table)</a></td>
+	<td class="name" nowrap><a href="#boomstick_api.spawn_smoke_particles">boomstick_api.spawn_smoke_particles (player, particles)</a></td>
 	<td class="summary">Generates smoke particles that look like smoke from a fired weapon
  <strong>Note:</strong> It is usually not necesary to call this function directly unless
  you are extending the mod or making custom behavior.</td>
@@ -382,7 +382,7 @@
 </dd>
     <dt>
     <a name = "boomstick_api.spawn_smoke_particles"></a>
-    <strong>boomstick_api.spawn_smoke_particles (player, particle_table)</strong>
+    <strong>boomstick_api.spawn_smoke_particles (player, particles)</strong>
     </dt>
     <dd>
     Generates smoke particles that look like smoke from a fired weapon
@@ -399,7 +399,7 @@
 </ul>
 
         </li>
-        <li><span class="parameter">particle_table</span>
+        <li><span class="parameter">particles</span>
 
 <ul>
     <li>A table containing attributes of the particles.</li>
@@ -429,7 +429,6 @@
 
     <span class="comment">-- The maximum possible velocity of a particle
 </span>    velocity = <span class="number">2</span>
-
 })</pre>
     </ul>
 
