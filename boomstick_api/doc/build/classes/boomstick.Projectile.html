@@ -71,7 +71,7 @@
     _velocity = 50,
 
     -- How long until our projectile should despawn (optional)
-    _velocity = 50,
+    _lifetime = 2.5,
 
     -- How much damage each projectile will do
     _damage = 6,
@@ -120,6 +120,22 @@ minetest.register_entity(&quot;boomstick:pellet&quot;, PelletProjectile)
 	<tr>
 	<td class="name" nowrap><a href="#boomstick_api.Projectile:do_damage">boomstick_api.Projectile:do_damage (collision)</a></td>
 	<td class="summary">Deal damage to whatever object or node the projectile collided with.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.Projectile:get_velocity">boomstick_api.Projectile:get_velocity (player)</a></td>
+	<td class="summary">Given a player look direction and a velocity value, create a
+ vector that sends the projectile off in the direction the player is
+ pointing.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.Projectile:get_acceleration">boomstick_api.Projectile:get_acceleration (player, accuracy)</a></td>
+	<td class="summary">Given a player position and an accuracy value, create a randomized
+ vector for the projectiles acceleration</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#boomstick_api.Projectile:get_position">boomstick_api.Projectile:get_position (player, accuracy)</a></td>
+	<td class="summary">Given a player position and an accuracy value, create a randomized
+ position that the projectile should be spawned in at.</td>
 	</tr>
 </table>
 
@@ -262,6 +278,96 @@ minetest.register_entity(&quot;boomstick:pellet&quot;, PelletProjectile)
            <span class="types"><span class="type">bool</span></span>
         whether or not the projectile collided with another projectile.
     </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.Projectile:get_velocity"></a>
+    <strong>boomstick_api.Projectile:get_velocity (player)</strong>
+    </dt>
+    <dd>
+    Given a player look direction and a velocity value, create a
+ vector that sends the projectile off in the direction the player is
+ pointing.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">player</span>
+
+<ul>
+    <li>A player <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a>. This is the player who fired the weapon.</li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.Projectile:get_acceleration"></a>
+    <strong>boomstick_api.Projectile:get_acceleration (player, accuracy)</strong>
+    </dt>
+    <dd>
+    Given a player position and an accuracy value, create a randomized
+ vector for the projectiles acceleration
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">player</span>
+
+<ul>
+    <li>A player <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a>. This is the player who fired the weapon.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">accuracy</span>
+
+<ul>
+    <li>An accuracy value that will determine randomized acceleration spread</li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "boomstick_api.Projectile:get_position"></a>
+    <strong>boomstick_api.Projectile:get_position (player, accuracy)</strong>
+    </dt>
+    <dd>
+    Given a player position and an accuracy value, create a randomized
+ position that the projectile should be spawned in at.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">player</span>
+
+<ul>
+    <li>A player <a href="https://minetest.gitlab.io/minetest/class-reference/#objectref">ObjectRef</a>. This is the player who fired the weapon.</li>
+</ul>
+
+        </li>
+        <li><span class="parameter">accuracy</span>
+
+<ul>
+    <li>An accuracy value that will determine randomized acceleration spread</li>
+</ul>
+
+        </li>
+    </ul>
+
 
 
 

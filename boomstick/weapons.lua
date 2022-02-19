@@ -7,13 +7,17 @@ boomstick_api.create_new_category("shotgun", "weapon", {
 
 -- pump shotgun weapon category
 boomstick_api.create_new_category("pump_shotgun", "shotgun", {
-    cycle_weapon_sounds = {"boomstick_shotgun_rack"},
-    fire_weapon_sounds = {
-        "boomstick_shotgun_fire_1",
-        "boomstick_shotgun_fire_2",
-        "boomstick_shotgun_fire_3"
+    cycle_weapon_sounds = {
+        {name = "boomstick_shotgun_rack"}
     },
-    load_weapon_sounds = {"boomstick_shotgun_load_1", "boomstick_shotgun_load_2"}
+    fire_weapon_sounds = {
+        {name = "boomstick_shotgun_fire_1"},
+        {name = "boomstick_shotgun_fire_2"},
+        {name = "boomstick_shotgun_fire_3"},
+    },
+    load_weapon_sounds = {
+        {name = "boomstick_shotgun_load_1"},
+    },
 })
 
 boomstick_api.create_new_category("old", "weapon", {
@@ -27,9 +31,9 @@ boomstick_api.create_new_category("old", "weapon", {
     ammo_type = "boomstick:musket_charge",
     cycle_weapon_sounds = {"boomstick_musket_cock"},
     fire_weapon_sounds = {
-        "boomstick_shotgun_fire_1",
-        "boomstick_shotgun_fire_2",
-        "boomstick_shotgun_fire_3"
+        {name = "boomstick_shotgun_fire_1"},
+        {name = "boomstick_shotgun_fire_2"},
+        {name = "boomstick_shotgun_fire_3"},
     },
     load_weapon_sounds = {"boomstick_musket_load_1"}
 })

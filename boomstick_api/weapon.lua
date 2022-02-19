@@ -199,23 +199,13 @@ function boomstick_api.cycle_weapon(itemstack, user)
     end
 
     local weapon_data = item_def.boomstick_weapon_data
-    boomstick_api.play_cycle_weapon_sound(weapon_data, player)
+    boomstick_api.play_random_sound_on_player(weapon_data.cycle_weapon_sounds, user)
 
     minetest.after(weapon_data.cycle_cooldown, function()
         weapon_data.cocked = true
     end
 )
 
-end
-
-function boomstick_api.play_cycle_weapon_sound(weapon_data, player)
-    local player_position = player:get_pos()
-
-    local sounds = weapon_data.cycle_weapon_sounds
-    local sound_spec = boomstick_api.get_random_sound(sounds)
-    local sound_table = {pos = player_position, gain = 1.5, max_hear_distance = 5}
-
-    minetest.sound_play(sound_spec, sound_table, false)
 end
 
 
@@ -267,7 +257,10 @@ boomstick_api.weapon_fire_function = boomstick_api.fire_weapon
 -- @param user - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref) passed by Minetest when called as a callback. This is the player who fired the weapon.
 -- @param pointed_thing - [pointed_thing](https://minetest.gitlab.io/minetest/representations-of-simple-things/#pointed_thing) passed by Minetest when called as a callback.
 function boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
-    boomstick_api.play_fire_loaded_weapon_sound(weapon_data, user)
+    assert(weapon_data ~= nil)
+    assert(user and minetest.is_player(user), "Must provide a valid player object")
+
+    boomstick_api.play_random_sound_on_player(weapon_data.fire_weapon_sounds, user)
     boomstick_api.launch_projectiles(user, weapon_data, pointed_thing)
     boomstick_api.spawn_smoke_particles(user, nil)
     boomstick_api.recoil(user, weapon_data.recoil)
@@ -276,25 +269,12 @@ function boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
     weapon_data.rounds_loaded = weapon_data.rounds_loaded - 1
 end
 
-function boomstick_api.play_fire_loaded_weapon_sound(weapon_data, player)
-    assert(weapon_data ~= nil)
-    assert(player and minetest.is_player(player), "Must provide a valid player object")
-
-    local player_pos = player:get_pos()
-
-    local sounds = weapon_data.fire_weapon_sounds
-    local sound_spec = boomstick_api.get_random_sound(sounds)
-    local sound_table = {pos = player_pos, gain = 1.0, max_hear_distance = 32}
-
-    minetest.sound_play(sound_spec, sound_table, false)
-end
-
 
 --- Generates smoke particles that look like smoke from a fired weapon
 -- **Note:** It is usually not necesary to call this function directly unless
 -- you are extending the mod or making custom behavior.
 -- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref) that the smoke particles will be created near. This would usually be the player firing the weapon.
--- @param particle_table - A table containing attributes of the particles.
+-- @param particles - A table containing attributes of the particles.
 -- @usage
 -- boomstick_api.spawn_smoke_particles(player, {
 --     -- The number of smoke particles to spawn
@@ -352,13 +332,7 @@ end
 -- @param weapon_data - Weapon data for a weapon.
 -- @param user - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref) passed by Minetest when called as a callback. This is the player who fired the weapon.
 function boomstick_api.fire_empty_weapon(weapon_data, user)
-    local player_pos = user:get_pos()
-
-    local sounds = weapon_data.weapon_empty_sounds
-    local sound_spec = boomstick_api.get_random_sound(sounds)
-    local sound_table = {pos = player_pos, gain = 0.25, max_hear_distance = 5}
-
-    minetest.sound_play(sound_spec, sound_table, false)
+    boomstick_api.play_random_sound_on_player(weapon_data.empty_weapon_sounds, user)
 end
 
 
@@ -374,6 +348,7 @@ function boomstick_api.load_weapon(held_itemstack, user)
     end
 end
 
+
 function load_weapon_with_ammo(inv_itemstack, held_itemstack, player)
     local inv_itemstack_def = inv_itemstack:get_definition()
     local weapon_data = boomstick_api.get_weapon_data(inv_itemstack_def)
@@ -381,28 +356,15 @@ function load_weapon_with_ammo(inv_itemstack, held_itemstack, player)
     weapon_data.rounds_loaded = weapon_data.rounds_loaded + 1
     weapon_data.ammo_ready = false
 
-    boomstick_api.play_load_weapon_sound(weapon_data, player)
+    print(dump(weapon_data.load_weapon_sounds))
+    boomstick_api.play_random_sound_on_player(weapon_data.load_weapon_sounds, player)
     held_itemstack:take_item()
-
-    local player_position = player:get_pos()
 
     minetest.after(weapon_data.reload_delay, function()
         weapon_data.ammo_ready = true
-    end)
+    end
+)
     return held_itemstack
-end
-
-function boomstick_api.play_load_weapon_sound(weapon_data, player)
-    assert(weapon_data ~= nil)
-    assert(player and minetest.is_player(player), "Must provide a valid player object")
-
-    local player_position = player:get_pos()
-
-    local sounds = weapon_data.load_weapon_sounds
-    local sound_table = {pos = player_position, gain = 1.0, max_hear_distance = 32}
-    local sound_spec = boomstick_api.get_random_sound(sounds)
-
-    minetest.sound_play(sound_spec, sound_table, false)
 end
 
 
@@ -535,6 +497,9 @@ boomstick_api.create_new_category("weapon", {
     ammo_ready = true,
     wear = 2,
     recoil = 2,
-    wield_scale = {x = 1.5, y = 1.5, z = 1}
+    wield_scale = {x = 1.5, y = 1.5, z = 1},
+    empty_weapon_sounds = {
+        {name = "boomstick_empty", gain = 0.25, max_hear_distance = 5},
+        {name = "boomstick_empty_2", gain = 0.25, max_hear_distance = 5}
+    }
 })
-
