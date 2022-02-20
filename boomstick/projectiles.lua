@@ -42,13 +42,14 @@ MediumBulletProjectile = boomstick_api.Projectile:new({
     _name = S("Medium Bullet"),
     _item_name = "Medium Bullet",
     _entity_name = "boomstick:medium_bullet_projectile",
-    _velocity = 0,
+    _velocity = 50,
     _damage = 6,
     initial_properties = {
         visual = "mesh",
         mesh = "boomstick_bullet_projectile.b3d",
         textures = {"boomstick_bullet_projectile_texture.png"},
         physical = true,
+        glow = 5,
         collide_with_objects = true,
         visual_size = {y = 1, x = 1, z = 1},
         collisionbox = {-0.01, 0, -0.01, 0.01, 0.01, 0.01}

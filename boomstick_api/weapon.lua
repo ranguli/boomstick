@@ -219,32 +219,41 @@ function boomstick_api.fire_weapon(itemstack, user, pointed_thing)
     local item_def = itemstack:get_definition()
     local weapon_data = itemstack:get_definition().boomstick_weapon_data
 
+    if not boomstick_api.weapon_is_cocked(item_def) then
+        return
+    elseif boomstick_api.fire_weapon_callbacks(callbacks, user) == false then
+        return
+    elseif boomstick_api.weapon_is_empty(item_def) then
+        boomstick_api.fire_empty_weapon(weapon_data, user)
+    else
+        boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
+        itemstack:add_wear(weapon_data.wear)
+    end
+
+    if weapon_data.action == "manual" then
+        weapon_data.cocked = false
+    end
+
+    return itemstack
+end
+
+function boomstick_api.fire_weapon_callbacks(callbacks, user)
+    -- Execute any registered callbacks that should run when a weapon is fire.
     for i, callback in pairs(boomstick_api.data.callbacks) do
+        -- Special callbacks that can determine whether or not a weapon can be
+        -- fired. Useful for disabling weapons programatically.
         if callback.callback_type == "fire_condition" then
             local can_fire = callback.callback_func(user)
             if can_fire == false then
-                return
+                return false
             end
+        -- Regular callbacks, useful for things like achievements or statistics.
         elseif callback.callback_type == "weapon_fired" then
             callback.callback_func(user)
         end
     end
 
-    if not boomstick_api.weapon_is_cocked(item_def) then
-        return
-    end
-
-    if boomstick_api.weapon_is_empty(item_def) then
-        boomstick_api.fire_empty_weapon(weapon_data, user)
-    else
-        boomstick_api.fire_loaded_weapon(weapon_data, user, pointed_thing)
-        itemstack:add_wear(weapon_data.wear)
-
-    end
-
-    weapon_data.cocked = false
-
-    return itemstack
+    return true
 end
 
 
