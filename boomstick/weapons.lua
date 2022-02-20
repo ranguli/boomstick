@@ -62,16 +62,15 @@ boomstick_api.create_new_weapon({
 })
 
 boomstick_api.create_new_weapon({
-    name = "SKS",
-    description = "bang",
+    name = "AK-47",
     category = "semi_rifle",
-    item_name = "SKS",
+    item_name = "ak47",
     capacity = 10,
-    entity_name = "boomstick:sks",
+    entity_name = "boomstick:ak47",
     textures = {
-        icon = "boomstick_missing_texture.png",
-        default = "boomstick_missing_texture.png",
-        reload = "boomstick_missing_texture.png"
+        icon = "boomstick_ak47.png",
+        default = "boomstick_ak47.png",
+        reload = "boomstick_ak47.png"
     },
     wield_scale = {x = 2, y = 2, z = 1},
     --projectile_data = MediumBuletProjectile

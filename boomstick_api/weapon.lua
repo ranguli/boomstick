@@ -172,21 +172,6 @@ function boomstick_api.create_new_weapon(new_weapon_data)
 end
 
 
-function boomstick_api.create_new_category(name, category, base)
-    -- Inherit any default values from a base, if one is provided. (Ensure both are tables)
-    if base ~= nil and type(base) == "table" and type(category) == "table" then
-        category =
-            boomstick_api.table_merge(boomstick_api.data.categories[base], category)
-    elseif base ~= nil and type(base) == "table" and type(category) == "string" then
-        -- Because category could be before our table let's reverse the calls so we get the right thing
-        category =
-            boomstick_api.table_merge(boomstick_api.data.categories[category], base)
-    end
-    -- minetest.log("action", minetest.serialize(category)) -- Used to verify the tables were being merged
-    boomstick_api.data.categories[name] = category
-end
-
-
 function boomstick_api.cycle_weapon(itemstack, user)
     -- TODO: this should also call a function that renders a shell being ejected. if the
     -- chamber was loaded (if boomstick_api_data.cocked=true), a loaded shell should
@@ -237,6 +222,7 @@ function boomstick_api.fire_weapon(itemstack, user, pointed_thing)
     return itemstack
 end
 
+
 function boomstick_api.fire_weapon_callbacks(callbacks, user)
     -- Execute any registered callbacks that should run when a weapon is fire.
     for i, callback in pairs(boomstick_api.data.callbacks) do
@@ -247,7 +233,7 @@ function boomstick_api.fire_weapon_callbacks(callbacks, user)
             if can_fire == false then
                 return false
             end
-        -- Regular callbacks, useful for things like achievements or statistics.
+            -- Regular callbacks, useful for things like achievements or statistics.
         elseif callback.callback_type == "weapon_fired" then
             callback.callback_func(user)
         end

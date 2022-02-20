@@ -120,15 +120,3 @@ minetest.register_craftitem("boomstick:556", {
     range = 1,
     groups = {boomstick_ammo = 1}
 })
-
--- 7.62x39 Ammo
-minetest.register_craftitem("boomstick:762x39", {
-    description = S("@1 Ammo", S("7.62x39")),
-    inventory_image = "boomstick_762x39_ammo.png",
-    wield_image = "boomstick_762x39_ammo.png",
-    wield_scale = {x = 0.25, y = 0.25, z = 0.25},
-    stack_max = 30,
-    on_secondary_use = boomstick_api.weapon_load_function,
-    range = 1,
-    groups = {boomstick_ammo = 1}
-})

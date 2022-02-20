@@ -17,6 +17,19 @@ function boomstick_api.table_merge(table1, table2)
     return table2
 end
 
+function boomstick_api.create_new_category(name, category, base)
+    -- Inherit any default values from a base, if one is provided. (Ensure both are tables)
+    if base ~= nil and type(base) == "table" and type(category) == "table" then
+        category =
+            boomstick_api.table_merge(boomstick_api.data.categories[base], category)
+    elseif base ~= nil and type(base) == "table" and type(category) == "string" then
+        -- Because category could be before our table let's reverse the calls so we get the right thing
+        category =
+            boomstick_api.table_merge(boomstick_api.data.categories[category], base)
+    end
+    -- minetest.log("action", minetest.serialize(category)) -- Used to verify the tables were being merged
+    boomstick_api.data.categories[name] = category
+end
 
 --- Given a table and a set of keys, validate that the keys in the table exist.
 -- @param keys - Table containing keys
@@ -58,6 +71,7 @@ function boomstick_api.get_random_sound(table)
 
     return boomstick_api.get_random_entry(table)
 end
+
 
 --- Wrapper for `minetest.log()` with some added conveniences.
 -- @param string - A string to log to the Minetest console for debugging purposes, which will be the first argument to `string.format()`
@@ -155,7 +169,8 @@ function boomstick_api.play_sound(sound, pos)
         minetest.log("error", "Argument #1 to boomstick_api.play_sound() must not be nil.")
         return nil
     elseif not sound.name then
-        minetest.log("error", "Argument #1 to boomstick_api.play_sound() must not contain a 'name' field.")
+        minetest.log("error",
+            "Argument #1 to boomstick_api.play_sound() must not contain a 'name' field.")
         return nil
     end
 
@@ -166,4 +181,3 @@ function boomstick_api.play_sound(sound, pos)
     local sound_table = {pos = pos, max_hear_distance = max_hear_distance}
     minetest.sound_play(sound_spec, sound_table, false)
 end
-

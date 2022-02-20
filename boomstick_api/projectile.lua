@@ -210,6 +210,7 @@ function boomstick_api.Projectile:get_position(player, accuracy)
     return vector.add(player_offset_pos, randomization_vector)
 end
 
+
 --- Given a player position, set the rotation of a projectile
 -- so the projectile model is facing the direction the playing is looking.
 -- @param player - A player [ObjectRef](https://minetest.gitlab.io/minetest/class-reference/#objectref). This is the player who fired the weapon.
@@ -222,6 +223,7 @@ function boomstick_api.Projectile:get_rotation(player)
 
     return vector.new(-pitch, yaw, 0)
 end
+
 
 function boomstick_api.Projectile:on_step(dtime, moveresult)
     self._timer = self._timer + dtime
