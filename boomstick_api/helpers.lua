@@ -36,6 +36,8 @@ end
 -- @param data - Table to be validated.
 -- @return boolean - Whether or not the table has all keys.
 function boomstick_api.validate_table(keys, data)
+    assert(data ~= nil, "Argument 'data' to validate_table() is nil")
+
     for _, key in pairs(keys) do
         if data[key] == nil then
             return false

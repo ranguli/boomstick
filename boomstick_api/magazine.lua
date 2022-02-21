@@ -74,12 +74,11 @@ function boomstick_api.can_load_magazine_with_ammo(inv_itemstack, held_itemstack
 end
 
 function boomstick_api.can_load_magazine_into_weapon(inv_itemstack, held_itemstack)
-    print('yes')
 end
 
 function boomstick_api.load_magazine_into_weapon()
-    print('yeeees')
 end
+
 boomstick_api.load_magazine_into_weapon_function = boomstick_api.load_magazine_into_weapon
 
 function boomstick_api.load_rounds_into_magazine(magazine_data, ammo_type, count)
@@ -103,13 +102,9 @@ function boomstick_api.unload_rounds_from_magazine(magazine_data, ammo_type, cou
     end
 end
 
-function boomstick_api.create_new_magazine(magazine_name, magazine_definition)
-
-end
-
-function boomstick_api.validate_magazine_definition(data)
-    local keys = {"_category", "_capacity"}
-    return boomstick_api.validate_table(keys, data)
+function boomstick_api.validate_magazine_data(magazine_data)
+    local keys = {"category", "capacity"}
+    return boomstick_api.validate_table(keys, magazine_data)
 end
 
 function boomstick_api.create_new_magazine(magazine_name, magazine_definition)
@@ -125,18 +120,16 @@ function boomstick_api.create_new_magazine(magazine_name, magazine_definition)
         error("Category '" .. magazine_category .. "' does not exist.")
     end
 
-    local magazine_data = boomstick_api.table_merge(magazine_data, boomstick_api.data.categories[magazine_category])
+    local magazine_definition = boomstick_api.table_merge(magazine_definition, boomstick_api.data.categories[magazine_category])
 
+    -- Register the magazine type globally
     boomstick_api.data.magazines[magazine_name] = magazine_data
 
     minetest.register_craftitem(magazine_name, magazine_definition)
 end
 
-
 boomstick_api.create_new_category("detachable_magazine", {
-    inventory_image = "boomstick_magazine.png",
-    wield_image = "boomstick_magazine.png",
-    wield_scale = {x = 0.25, y = 0.25, z = 0.25},
+    wield_scale = {x = 0.75, y = 0.75, z = 1},
     stack_max = 1,
     range = 1,
     groups = {boomstick_magazine = 1},

@@ -63,6 +63,7 @@ boomstick_api.create_new_weapon({
 
 boomstick_api.create_new_weapon({
     name = "AK-47",
+    description = "yeet",
     category = "semi_rifle",
     item_name = "ak47",
     capacity = 10,
@@ -70,7 +71,7 @@ boomstick_api.create_new_weapon({
     textures = {
         icon = "boomstick_ak47.png",
         default = "boomstick_ak47.png",
-        reload = "boomstick_ak47.png"
+        unloaded = "boomstick_ak47_unloaded.png"
     },
     wield_scale = {x = 2, y = 2, z = 1},
     --projectile_data = MediumBuletProjectile

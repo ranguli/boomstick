@@ -59,8 +59,6 @@ end
 
 boomstick_api.load_ammo_into_magazine_function = boomstick_api.load_ammo_into_magazine
 
-
-
 boomstick_api.create_new_category("ammo", {
     inventory_image = "boomstick_556_ammo.png",
     wield_image = "boomstick_556_ammo.png",

@@ -168,7 +168,6 @@ function boomstick_api.create_new_weapon(new_weapon_data)
         on_secondary_use = boomstick_api.weapon_cycle_function,
         on_use = boomstick_api.weapon_fire_function
     })
-
 end
 
 
