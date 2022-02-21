@@ -4,13 +4,16 @@
 -- containing the rounds themselves, which follows a LIFO principle. The stack is useful when a magazine is
 -- loaded with different types of ammunition.
 -- Only applicable when a magazine is an item
-function boomstick_api.get_magazine_data(item_definition)
-    return item_definition._boomstick_magazine_data
+function boomstick_api.get_magazine_data(item_stack)
+    assert(item_stack ~= nil, "Can't retrieve magazine_data for a nil ItemStack.")
+
+    local item_stack = item_stack:get_definition()
+    return item_stack._boomstick_magazine_data
 end
 
 
-function boomstick_api.item_is_magazine(item_definition)
-    if boomstick_api.get_magazine_data(item_definition) == nil then
+function boomstick_api.item_is_magazine(item_stack)
+    if boomstick_api.get_magazine_data(item_stack) == nil then
         return false
     end
     return true
@@ -21,10 +24,10 @@ end
 --
 -- @param item_definition An [Item Definition](https://minetest.gitlab.io/minetest/definition-tables/#item-definition) of a weapon, returned by [get_definition()](https://minetest.gitlab.io/minetest/class-reference/#methods_2)
 -- @return boolean - Indicating if the weapon is full.
-function boomstick_api.magazine_is_full(item_definition)
-    if item_definition == nil or not boomstick_api.item_is_magazine(item_definition) then
+function boomstick_api.magazine_is_full(item_stack)
+    if item_stack == nil or not boomstick_api.item_is_magazine(item_stack) then
         return
-    elseif not boomstick_api.item_is_magazine(item_definition) then
+    elseif not boomstick_api.item_is_magazine(item_stack) then
         return
     end
 
@@ -74,9 +77,27 @@ function boomstick_api.can_load_magazine_with_ammo(inv_itemstack, held_itemstack
 end
 
 function boomstick_api.can_load_magazine_into_weapon(inv_itemstack, held_itemstack)
+    return true
 end
 
-function boomstick_api.load_magazine_into_weapon()
+function boomstick_api.load_magazine_into_weapon(held_itemstack, user, _)
+    assert(boomstick_api.item_is_magazine(held_itemstack), "Tried to load an item into a weapon that is not a magazine")
+
+    local meta = held_itemstack:get_meta()
+    local item_definition = held_itemstack:get_definition()
+    local magazine_data = item_definition._boomstick_magazine_data
+
+    if meta:contains("boomstick_ammo_stack") then
+        print("item already has ammo stack")
+    else
+        boomstick_api.debug("ItemStack is missing ammo_stack in its metadata. Initializing it with one.")
+        local stack = boomstick_api.SizedStack:new()
+        stack:set_size(magazine_data.capacity)
+        stack:push("hellomystack")
+        meta:set_string("ammo_stack", minetest.serialize(stack))
+    end
+
+    print(dump(meta:to_table()))
 end
 
 boomstick_api.load_magazine_into_weapon_function = boomstick_api.load_magazine_into_weapon
@@ -124,6 +145,7 @@ function boomstick_api.create_new_magazine(magazine_name, magazine_definition)
 
     -- Register the magazine type globally
     boomstick_api.data.magazines[magazine_name] = magazine_data
+    magazine_definition._boomstick_magazine_data = magazine_data
 
     minetest.register_craftitem(magazine_name, magazine_definition)
 end
