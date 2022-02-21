@@ -7,6 +7,7 @@ boomstick_api.data.particle_size = 2
 
 local modpath = minetest.get_modpath("boomstick_api")
 
+dofile(modpath .. "/stack.lua")
 dofile(modpath .. "/helpers.lua")
 dofile(modpath .. "/projectile.lua")
 dofile(modpath .. "/ammo.lua")
